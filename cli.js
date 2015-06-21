@@ -9,8 +9,8 @@ var logSymbols = require('log-symbols');
 var arrayUniq = require('array-uniq');
 var arrayDiffer = require('array-differ');
 var objectAssign = require('object-assign');
+var Pageres = require('pageres');
 var pkg = require('./package.json');
-var Pageres = require('./');
 
 var options = subarg(process.argv.slice(2), {
 	boolean: [
@@ -106,7 +106,7 @@ function generate(args, options) {
 function get(args) {
 	var ret = [];
 
-	args.forEach(function (arg, i) {
+	args.forEach(function (arg) {
 		if (!arg.url.length) {
 			console.error(logSymbols.warning, 'Specify a url');
 			process.exit(1);

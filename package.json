@@ -1,0 +1,72 @@
+{
+  "name": "pageres-cli",
+  "version": "0.0.0",
+  "description": "Capture website screenshots",
+  "license": "MIT",
+  "repository": "sindresorhus/pageres-cli",
+  "preferGlobal": true,
+  "bin": {
+    "pageres": "cli.js"
+  },
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "files": [
+    "cli.js"
+  ],
+  "keywords": [
+    "cli-app",
+    "cli",
+    "page",
+    "website",
+    "site",
+    "web",
+    "url",
+    "resolution",
+    "size",
+    "screenshot",
+    "screenshots",
+    "screengrab",
+    "screen",
+    "snapshot",
+    "shot",
+    "responsive",
+    "gulpfriendly",
+    "phantom",
+    "phantomjs",
+    "image",
+    "svg",
+    "render",
+    "html",
+    "headless",
+    "capture",
+    "pic",
+    "picture",
+    "png",
+    "jpg",
+    "jpeg"
+  ],
+  "dependencies": {
+    "array-differ": "^1.0.0",
+    "array-uniq": "^1.0.2",
+    "get-stdin": "^4.0.1",
+    "log-symbols": "^1.0.0",
+    "multiline": "^1.0.0",
+    "object-assign": "^3.0.0",
+    "pageres": "^2.0.0",
+    "subarg": "^1.0.0",
+    "sudo-block": "^1.0.0",
+    "update-notifier": "^0.5.0"
+  },
+  "devDependencies": {
+    "ava": "0.0.4"
+  }
+}

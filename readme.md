@@ -1,23 +1,18 @@
-# ![pageres](media/promo.png)
+# pageres-cli [![Build Status](https://travis-ci.org/sindresorhus/pageres-cli.svg?branch=master)](https://travis-ci.org/sindresorhus/pageres-cli) [![](http://img.shields.io/badge/unicorn-approved-ff69b4.svg)](https://www.youtube.com/watch?v=9auOCbH5Ns4)
 
-[![Build Status](https://travis-ci.org/sindresorhus/pageres.svg?branch=master)](https://travis-ci.org/sindresorhus/pageres)
-[![Coverage Status](https://coveralls.io/repos/sindresorhus/pageres/badge.svg?branch=master)](https://coveralls.io/r/sindresorhus/pageres?branch=master) [![](http://img.shields.io/badge/unicorn-approved-ff69b4.svg)](https://www.youtube.com/watch?v=9auOCbH5Ns4)
+![](screenshot.png)
 
-Capture screenshots of websites in various resolutions. A good way to make sure your websites are responsive.
+![](screenshot-output.png)
 
-It's speedy and generates 100 screenshots from 10 different websites in just over a minute.
+Capture screenshots of websites in various resolutions. A good way to make sure your websites are responsive. It's speedy and generates 100 screenshots from 10 different websites in just over a minute. It can also be used to render SVG images.
 
-It can also be used to render SVG images.
-
-![](media/screenshot.png)
-
-![](media/screenshot-output.png)
+*See [pageres](https://github.com/sindresorhus/pageres) for the programmatic API and issues tracker.*
 
 
 ## Install
 
 ```
-$ npm install --global pageres
+$ npm install --global pageres-cli
 ```
 
 *PhantomJS, which is used for generating the screenshots, is installed automagically, but in some [rare cases](https://github.com/Obvious/phantomjs/issues/102) it might fail to and you'll get an `Error: spawn EACCES` error. [Download](http://phantomjs.org/download.html) PhantomJS manually and reinstall pageres if that happens.*
@@ -30,41 +25,41 @@ Specify urls and screen resolutions as arguments. Order doesn't matter.
 If no resolution is specified it will default to `1366x768` which is the most popular resolution.
 
 ```sh
-$ pageres <url> <resolution>
-$ pageres <resolution> <url>
+pageres <url> <resolution>
+pageres <resolution> <url>
 
 # <url> can also be a local file path.
-$ pageres <file> <resolution>
+pageres <file> <resolution>
 ```
 
 List multiple urls and resolutions for pageres to capture all combinations.
 
 ```sh
-$ pageres <url> <resolution> ...
+pageres <url> <resolution> ...
 
-$ pageres todomvc.com 1024x768 1366x768 # 2 screenshots
-$ pageres todomvc.com yeoman.io 1024x768 # 2 screenshots
-$ pageres todomvc.com yeoman.io 1024x768 1366x768 # 4 screenshots
+pageres todomvc.com 1024x768 1366x768 # 2 screenshots
+pageres todomvc.com yeoman.io 1024x768 # 2 screenshots
+pageres todomvc.com yeoman.io 1024x768 1366x768 # 4 screenshots
 ```
 
 Pipe in a newline separated list of urls and screen resolutions which will get merged with the arguments.
 
 ```sh
 # In this case a list of screen resolutions
-$ pageres <url> < screen-resolutions.txt
+pageres <url> < screen-resolutions.txt
 ```
 
 Group arguments with square brackets.
 
 ```sh
-$ pageres [ <url> <resolution> ] [ <url> <resolution> ]
-$ pageres [ <url> <resolution> ... ]
+pageres [ <url> <resolution> ] [ <url> <resolution> ]
+pageres [ <url> <resolution> ... ]
 
 # Mix grouped and single arguments
-$ pageres [ yeoman.io 1024x768 1600x900 ] todomvc.com 1366x768
+pageres [ yeoman.io 1024x768 1600x900 ] todomvc.com 1366x768
 
 # Options defined inside a group will override the outer ones.
-$ pageres [ yeoman.io 1024x768 --no-crop ] todomvc.com 1366x768 --crop
+pageres [ yeoman.io 1024x768 --no-crop ] todomvc.com 1366x768 --crop
 ```
 
 Screenshots are saved in the current directory.
@@ -107,7 +102,7 @@ Verbose output to see errors if you need to troubleshoot.
 
 Crop to the set height.
 
-```sh
+```
 $ pageres todomvc.com 1024x768 --crop
 ```
 
@@ -115,7 +110,7 @@ $ pageres todomvc.com 1024x768 --crop
 
 Delay screenshot capture.
 
-```sh
+```
 $ pageres todomvc.com 1024x768 --delay 3
 ```
 
@@ -123,7 +118,7 @@ $ pageres todomvc.com 1024x768 --delay 3
 
 Custom filename.
 
-```sh
+```
 $ pageres todomvc.com 1024x768 --filename '<%= date %> - <%= url %>'
 ```
 
@@ -131,7 +126,7 @@ $ pageres todomvc.com 1024x768 --filename '<%= date %> - <%= url %>'
 
 Capture DOM element.
 
-```sh
+```
 $ pageres yeoman.io 1366x768 --selector '.page-header'
 ```
 
@@ -139,7 +134,7 @@ $ pageres yeoman.io 1366x768 --selector '.page-header'
 
 Hide DOM element, can be set multiple times.
 
-```sh
+```
 $ pageres yeoman.io 1366x768 --hide '.page-header'
 ```
 
@@ -147,7 +142,7 @@ $ pageres yeoman.io 1366x768 --hide '.page-header'
 
 Override a global crop option within a group.
 
-```sh
+```
 $ pageres [ yeoman.io 1366x768 --no-crop ] todomvc.com 1024x768 --crop
 ```
 
@@ -155,7 +150,7 @@ $ pageres [ yeoman.io 1366x768 --no-crop ] todomvc.com 1024x768 --crop
 
 Browser cookie, can be set multiple times.
 
-```sh
+```
 $ pageres yeoman.io 1024x768 --cookie 'foo=bar'
 ```
 
@@ -191,182 +186,6 @@ pageres [ google.com 1000x1000 --crop ] [ github.com 500x500 ]
 ```
 
 
-## Task runners
-
-Check out [grunt-pageres](https://github.com/sindresorhus/grunt-pageres) if you're using grunt.
-
-For gulp and broccoli, just use the below API directly. No need for a wrapper plugin.  
-*(If you create a useless gulp/broccoli wrapper plugin for this, my cat will be very sad.)*
-
-
-## API
-
-### Install
-
-```sh
-$ npm install --save pageres
-```
-
-### Usage
-
-```js
-var Pageres = require('pageres');
-
-var pageres = new Pageres({delay: 2})
-	.src('yeoman.io', ['480x320', '1024x768', 'iphone 5s'], {crop: true})
-	.src('todomvc.com', ['1280x1024', '1920x1080'])
-	.dest(__dirname);
-
-pageres.run(function (err) {
-	console.log('done');
-});
-```
-
-
-### Pageres(options)
-
-#### options
-
-##### delay
-
-Type: `number` *(seconds)*  
-Default: `0`
-
-Delay capturing the screenshot.
-
-Useful when the site does things after load that you want to capture.
-
-##### crop
-
-Type: `boolean`  
-Default: `false`
-
-Crop to the set height.
-
-##### cookies
-
-Type: `array` of `string`, `object`
-
-A string with the same format as a [browser cookie](http://en.wikipedia.org/wiki/HTTP_cookie) or an object of what [`phantomjs.addCookie`](http://phantomjs.org/api/phantom/method/add-cookie.html) accepts.
-
-###### Tip
-
-Go to the website you want a cookie for and copy-paste it from Dev Tools.
-
-##### filename
-
-Type: `string`
-
-Define a customized filename using [Lo-Dash templates](http://lodash.com/docs#template).  
-For example `<%= date %> - <%= url %>-<%= size %><%= crop %>`.
-
-Available variables:
-
-- `url`: The URL in [slugified](https://github.com/ogt/slugify-url) form, eg. `http://yeoman.io/blog/` becomes `yeoman.io!blog`
-- `size`: Specified size, eg. `1024x1000`
-- `width`: Width of the specified size, eg. `1024`
-- `height`: Height of the specified size, eg. `1000`
-- `crop`: Outputs `-cropped` when the crop option is true
-- `date`: The current date (Y-M-d), eg. 2015-05-18
-- `time`: The current time (h-m-s), eg. 21-15-11
-
-##### selector
-
-Type: `string`
-
-Capture a specific DOM element.
-
-##### hide
-
-Type: `array`
-
-Hide an array of DOM elements.
-
-##### username
-
-Type: `string`
-
-Username for authenticating with HTTP auth.
-
-##### password
-
-Type: `string`
-
-Password for authenticating with HTTP auth.
-
-##### scale
-
-Type: `number`  
-Default: `1`
-
-Scale webpage `n` times.
-
-##### format
-
-Type: `string`  
-Default: `png`  
-Values: `png`, `jpg`
-
-Image format.
-
-##### userAgent
-
-Type: `string`
-
-Custom user agent.
-
-
-### pageres.src(url, sizes, options)
-
-Add a page to screenshot.
-
-#### url
-
-*Required*  
-Type: `string`
-
-URL or local path to the website you want to screenshot.
-
-#### sizes
-
-*Required*  
-Type: `array`
-
-Use a `<width>x<height>` notation or a keyword.
-
-A keyword is a version of a device from [this list](http://viewportsizes.com).
-You can also pass in the `w3counter` keyword to use the ten most popular
-resolutions from [w3counter](http://www.w3counter.com/globalstats.php).
-
-#### options
-
-Type: `object`
-
-Options set here will take precedence over the ones set in the constructor.
-
-### pageres.dest(directory)
-
-Set the destination directory.
-
-#### directory
-
-Type: `string`
-
-### pageres.run(callback)
-
-Run pageres.
-
-#### callback(error, [items])
-
-Type: `function`
-
-If you don't set a `dest()` you'll get `items` in this callback, which is an array of streams.
-
-### pageres.on('warn', callback)
-
-Warnings with eg. page errors.
-
-
 ## Google Analytics screen resolutions
 
 You can use the most popular resolutions for your site with `pageres` by following these steps:
@@ -377,18 +196,6 @@ You can use the most popular resolutions for your site with `pageres` by followi
 - Click the `Export` button at the top, then `Google Spreadsheets`, and select yes for importing
 - Select all the resolutions and copy them into a new file and save it
 - In your terminal run: `pageres website.com < file-from-above-step.txt`
-
-
-## Built with Pageres
-
-- [Break Shot](https://github.com/rcdigital/break-shot) - Desktop app for capturing screenshots of responsive websites.
-
-
-## Team
-
-[![Sindre Sorhus](http://gravatar.com/avatar/d36a92237c75c5337c17b60d90686bf9?s=144)](http://sindresorhus.com) | [![Kevin Mårtensson](http://gravatar.com/avatar/48fa294e3cd41680b80d3ed6345c7b4d?s=144)](https://github.com/kevva)
----|---
-[Sindre Sorhus](http://sindresorhus.com) | [Kevin Mårtensson](https://github.com/kevva)
 
 
 ## License
