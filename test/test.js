@@ -2,6 +2,7 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var test = require('ava');
+var pathExists = require('path-exists');
 
 process.chdir(__dirname);
 
@@ -13,7 +14,7 @@ test('generate screenshot', function (t) {
 	});
 
 	cp.on('close', function () {
-		t.assert(fs.existsSync('yeoman.io-320x240.png'));
+		t.assert(pathExists.sync('yeoman.io-320x240.png'));
 
 		fs.unlink('yeoman.io-320x240.png', function (err) {
 			t.assert(!err, err);
@@ -28,9 +29,9 @@ test('generate screenshots from a list of screen resolutions', function (t) {
 	var cp = spawn('../cli.js', ['yeoman.io']);
 
 	cp.on('close', function () {
-		t.assert(fs.existsSync('yeoman.io-1440x900.png'));
-		t.assert(fs.existsSync('yeoman.io-1280x1024.png'));
-		t.assert(fs.existsSync('yeoman.io-768x1024.png'));
+		t.assert(pathExists.sync('yeoman.io-1440x900.png'));
+		t.assert(pathExists.sync('yeoman.io-1280x1024.png'));
+		t.assert(pathExists.sync('yeoman.io-768x1024.png'));
 		fs.unlinkSync('yeoman.io-1440x900.png');
 		fs.unlinkSync('yeoman.io-1280x1024.png');
 
@@ -82,7 +83,7 @@ test('use 1366x768 as default resolution', function (t) {
 	});
 
 	cp.on('close', function () {
-		t.assert(fs.existsSync('yeoman.io-1366x768.png'));
+		t.assert(pathExists.sync('yeoman.io-1366x768.png'));
 
 		fs.unlink('yeoman.io-1366x768.png', function (err) {
 			t.assert(!err, err);
@@ -98,7 +99,7 @@ test('generate screenshots using keywords', function (t) {
 	});
 
 	cp.on('close', function () {
-		t.assert(fs.existsSync('yeoman.io-320x568.png'));
+		t.assert(pathExists.sync('yeoman.io-320x568.png'));
 
 		fs.unlink('yeoman.io-320x568.png', function (err) {
 			t.assert(!err, err);
