@@ -57,6 +57,7 @@
   "dependencies": {
     "array-differ": "^1.0.0",
     "array-uniq": "^1.0.2",
+    "arrify": "^1.0.0",
     "get-stdin": "^4.0.1",
     "log-symbols": "^1.0.0",
     "multiline": "^1.0.0",

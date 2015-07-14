@@ -8,6 +8,7 @@ var sudoBlock = require('sudo-block');
 var logSymbols = require('log-symbols');
 var arrayUniq = require('array-uniq');
 var arrayDiffer = require('array-differ');
+var arrify = require('arrify');
 var objectAssign = require('object-assign');
 var Pageres = require('pageres');
 var pkg = require('./package.json');
@@ -140,14 +141,14 @@ function parse(args, globalOptions) {
 		delete options._;
 
 		if (options.cookie) {
-			options.cookie = Array.isArray(options.cookie) ? options.cookie : [options.cookie];
+			options.cookie = arrify(options.cookie);
 		}
 		// plural makes more sense for a programmatic option
 		options.cookies = options.cookie;
 		delete options.cookie;
 
 		if (options.hide) {
-			options.hide = Array.isArray(options.hide) ? options.hide : [options.hide];
+			options.hide = arrify(options.hide);
 		}
 
 		var url = arrayUniq(arg.filter(/./.test, /\.|localhost/));
