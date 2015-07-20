@@ -143,9 +143,16 @@ function parse(args, globalOptions) {
 		if (options.cookie) {
 			options.cookie = arrify(options.cookie);
 		}
-		// plural makes more sense for a programmatic option
+
+		if (options.header) {
+			options.header = arrify(options.header);
+		}
+
+		// plural makes more sense for programmatic options
 		options.cookies = options.cookie;
+		options.headers = options.header;
 		delete options.cookie;
+		delete options.header;
 
 		if (options.hide) {
 			options.hide = arrify(options.hide);
