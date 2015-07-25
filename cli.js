@@ -53,8 +53,8 @@ function showHelp() {
   Example
     pageres todomvc.com yeoman.io 1366x768 1600x900
     pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
-    pageres todomvc.com 1024x768 --filename '<%= date %> - <%= url %>'
-    pageres yeoman.io 1366x768 --selector '.page-header'
+    pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
+    pageres yeoman.io 1366x768 --selector='.page-header'
     pageres --delay 3 1366x768 < urls.txt
     pageres unicorn.html 1366x768
     cat screen-resolutions.txt | pageres todomvc.com yeoman.io
@@ -62,16 +62,16 @@ function showHelp() {
   Options
     -v, --verbose            Verbose output
     -c, --crop               Crop to the set height
-    -d, --delay <seconds>    Delay screenshot capture
-    --filename <template>    Custom filename
-    --selector <element>     Capture DOM element
-    --hide <element>         Hide DOM element (Can be set multiple times)
-    --cookie <cookie>        Browser cookie (Can be set multiple times)
-    --header <string>        Custom HTTP request header (Can be set multiple times)
-    --username <username>    Username for HTTP auth
-    --password <password>    Password for HTTP auth
-    --scale <number>         Scale webpage
-    --format <string>        Image format
+    -d, --delay=<seconds>    Delay screenshot capture
+    --filename=<template>    Custom filename
+    --selector=<element>     Capture DOM element
+    --hide=<element>         Hide DOM element (Can be set multiple times)
+    --cookie=<cookie>        Browser cookie (Can be set multiple times)
+    --header=<string>        Custom HTTP request header (Can be set multiple times)
+    --username=<username>    Username for HTTP auth
+    --password=<password>    Password for HTTP auth
+    --scale=<number>         Scale webpage
+    --format=<string>        Image format
 
   <url> can also be a local file path.
 

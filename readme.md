@@ -74,13 +74,13 @@ pageres todomvc.com yeoman.io 1366x768 1600x900
 pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
 
 # Provide a custom filename template
-pageres todomvc.com 1024x768 --filename '<%= date %> - <%= url %>'
+pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
 
 # Capture a specific element
-pageres yeoman.io 1366x768 --selector '.page-header'
+pageres yeoman.io 1366x768 --selector='.page-header'
 
 # Hide a specific element
-pageres yeoman.io 1366x768 --hide '.page-header'
+pageres yeoman.io 1366x768 --hide='.page-header'
 
 # Delay and pipe in a list of urls
 pageres --delay 3 1366x768 < urls.txt
@@ -106,36 +106,36 @@ Crop to the set height.
 $ pageres todomvc.com 1024x768 --crop
 ```
 
-##### `-d`, `--delay`
+##### `-d`, `--delay=<number>`
 
 Delay screenshot capture.
 
 ```
-$ pageres todomvc.com 1024x768 --delay 3
+$ pageres todomvc.com 1024x768 --delay=3
 ```
 
-##### `--filename <template>`
+##### `--filename=<template>`
 
 Custom filename.
 
 ```
-$ pageres todomvc.com 1024x768 --filename '<%= date %> - <%= url %>'
+$ pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
 ```
 
-##### `--selector <element>`
+##### `--selector=<element>`
 
 Capture DOM element.
 
 ```
-$ pageres yeoman.io 1366x768 --selector '.page-header'
+$ pageres yeoman.io 1366x768 --selector='.page-header'
 ```
 
-##### `--hide <element>`
+##### `--hide=<element>`
 
 Hide DOM element. Can be set multiple times.
 
 ```
-$ pageres yeoman.io 1366x768 --hide '.page-header'
+$ pageres yeoman.io 1366x768 --hide='.page-header'
 ```
 
 ##### `--no-crop`
@@ -146,39 +146,39 @@ Override a global crop option within a group.
 $ pageres [ yeoman.io 1366x768 --no-crop ] todomvc.com 1024x768 --crop
 ```
 
-##### `--cookie <cookie>`
+##### `--cookie=<cookie>`
 
 Browser cookie. Can be set multiple times.
 
 ```
-$ pageres yeoman.io --cookie 'foo=bar'
+$ pageres yeoman.io --cookie='foo=bar'
 ```
 
-##### `--header <header>`
+##### `--header=<header>`
 
 Custom HTTP request header. Can be set multiple times.
 
 ```
-$ pageres yeoman.io --header 'Cache-Control: no-cache'
+$ pageres yeoman.io --header='Cache-Control: no-cache'
 ```
 
-##### `--username <username>`
+##### `--username=<username>`
 
 Username for HTTP auth.
 
-##### `--password <password>`
+##### `--password=<password>`
 
 Password for HTTP auth.
 
-##### `--scale <number>`
+##### `--scale=<number>`
 
 Scale webpage `n` of times.
 
-##### `--format <string>`
+##### `--format=<string>`
 
 Image format. Either `png` *(default)* or `jpg`.
 
-##### `--user-agent <string>`
+##### `--user-agent=<string>`
 
 Custom user agent.
 
