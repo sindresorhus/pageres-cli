@@ -175,17 +175,23 @@ function parse(args, globalOptions) {
 function init(args, options) {
 	if (options.version) {
 		console.log(pkg.version);
-		return;
+		process.exit();
 	}
 
-	if (options.help || !args.length) {
+	if (options.help) {
 		showHelp();
-		return;
+		process.exit();
+	}
+
+	if (args.length === 0) {
+		showHelp();
+		process.exit(1);
 	}
 
 	var nonGroupedArgs = args.filter(function (arg) {
 		return !arg._;
 	});
+
 	// filter grouped args
 	args = args.filter(function (arg) {
 		return arg._;
