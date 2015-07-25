@@ -132,7 +132,7 @@ $ pageres yeoman.io 1366x768 --selector '.page-header'
 
 ##### `--hide <element>`
 
-Hide DOM element, can be set multiple times.
+Hide DOM element. Can be set multiple times.
 
 ```
 $ pageres yeoman.io 1366x768 --hide '.page-header'
@@ -148,10 +148,18 @@ $ pageres [ yeoman.io 1366x768 --no-crop ] todomvc.com 1024x768 --crop
 
 ##### `--cookie <cookie>`
 
-Browser cookie, can be set multiple times.
+Browser cookie. Can be set multiple times.
 
 ```
-$ pageres yeoman.io 1024x768 --cookie 'foo=bar'
+$ pageres yeoman.io --cookie 'foo=bar'
+```
+
+##### `--header <header>`
+
+Custom HTTP request header. Can be set multiple times.
+
+```
+$ pageres yeoman.io --header 'Cache-Control: no-cache'
 ```
 
 ##### `--username <username>`

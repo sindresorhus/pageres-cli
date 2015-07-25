@@ -65,8 +65,9 @@ function showHelp() {
     -d, --delay <seconds>    Delay screenshot capture
     --filename <template>    Custom filename
     --selector <element>     Capture DOM element
-    --hide <element>         Hide DOM element, can be set multiple times
-    --cookie <cookie>        Browser cookie, can be set multiple times
+    --hide <element>         Hide DOM element (Can be set multiple times)
+    --cookie <cookie>        Browser cookie (Can be set multiple times)
+    --header <string>        Custom HTTP request header (Can be set multiple times)
     --username <username>    Username for HTTP auth
     --password <password>    Password for HTTP auth
     --scale <number>         Scale webpage
