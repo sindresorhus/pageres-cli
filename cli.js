@@ -11,6 +11,7 @@ var arrayDiffer = require('array-differ');
 var arrify = require('arrify');
 var objectAssign = require('object-assign');
 var Pageres = require('pageres');
+var parseHeaders = require('parse-headers');
 var pkg = require('./package.json');
 
 var options = subarg(process.argv.slice(2), {
@@ -146,7 +147,7 @@ function parse(args, globalOptions) {
 		}
 
 		if (options.header) {
-			options.header = arrify(options.header);
+			options.header = parseHeaders(arrify(options.header).join('\n'));
 		}
 
 		// plural makes more sense for programmatic options
