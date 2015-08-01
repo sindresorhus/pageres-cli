@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-inline-comments */
 'use strict';
 var multiline = require('multiline');
 var updateNotifier = require('update-notifier');
@@ -37,8 +38,8 @@ var args = options._;
 delete options._;
 
 function showHelp() {
-	console.log(multiline(function () {/*
-
+	console.log(multiline(function () {
+/*
   Capture screenshots of websites in various resolutions.
 
   Specify urls and screen resolutions as arguments. Order doesn't matter.
@@ -77,7 +78,7 @@ function showHelp() {
   <url> can also be a local file path.
 
   You can also pipe in a newline separated list of urls and screen resolutions which will get merged with the arguments.
-  */}));
+	*/}));
 }
 
 function generate(args, options) {
