@@ -61,7 +61,7 @@
     "get-stdin": "^4.0.1",
     "log-symbols": "^1.0.0",
     "multiline": "^1.0.0",
-    "object-assign": "^3.0.0",
+    "object-assign": "^4.0.1",
     "pageres": "^2.1.0",
     "parse-headers": "^2.0.0",
     "subarg": "^1.0.0",
