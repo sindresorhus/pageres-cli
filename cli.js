@@ -161,8 +161,8 @@ function parse(args, globalOptions) {
 			options.hide = arrify(options.hide);
 		}
 
-		var basicUrlRegex = /\./;
-		var urlRegex = /(http(s)?:\/\/)(www\.)?([^.]+)(\..{2,3})?|localhost/;
+		var basicUrlRegex = /\.|localhost/;
+		var urlRegex = /(http(s)?:\/\/)(www\.)?([^.]+)(\..{2,3})?/;
 		var sizeRegex = /^\d{3,4}x\d{3,4}$/i;
 
 		var url = arrayUniq(arg.filter(function (a) {
@@ -172,18 +172,12 @@ function parse(args, globalOptions) {
 		var originalUrls = [].concat(url);
 
 		url = arrayUniq(url.map(function (u) {
-			if (u === 'localhost' || basicUrlRegex.test(u)) {
+			if (basicUrlRegex.test(u)) {
 				return u;
 			}
 			var ret = u;
 			var matches = u.match(urlRegex);
-			if (!matches[3]) {
-				if (matches[2]) {
-					ret = ret.substring(0, 8) + 'www.' + ret.substring(8);
-				} else {
-					ret = ret.substring(0, 7) + 'www.' + ret.substring(7);
-				}
-			}
+
 			if (!matches[5]) {
 				ret += '.com';
 			}
