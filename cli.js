@@ -161,34 +161,19 @@ function parse(args, globalOptions) {
 			options.hide = arrify(options.hide);
 		}
 
-		var basicUrlRegex = /\.|localhost/;
-		var urlRegex = /(http(s)?:\/\/)(www\.)?([^.]+)(\..{2,3})?/;
+		// var basicUrlRegex = /\.|localhost/;
+		var urlRegex = /(http(s)?:\/\/)([^.]+)|localhost|\./;
 		var sizeRegex = /^\d{3,4}x\d{3,4}$/i;
 
 		var url = arrayUniq(arg.filter(function (a) {
-			return urlRegex.test(a) || basicUrlRegex.test(a);
-		}));
-
-		var originalUrls = [].concat(url);
-
-		url = arrayUniq(url.map(function (u) {
-			if (basicUrlRegex.test(u)) {
-				return u;
-			}
-			var ret = u;
-			var matches = u.match(urlRegex);
-
-			if (!matches[5]) {
-				ret += '.com';
-			}
-			return ret;
+			return urlRegex.test(a); // || basicUrlRegex.test(a);
 		}));
 
 		var sizes = arrayUniq(arg.filter(function (a) {
 			return sizeRegex.test(a);
 		}));
 
-		var keywords = arrayDiffer(arg, url.concat(sizes).concat(originalUrls));
+		var keywords = arrayDiffer(arg, url.concat(sizes));
 
 		return {
 			url: url,
