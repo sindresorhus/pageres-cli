@@ -236,7 +236,6 @@ function init(args, options) {
 
 	var parsedArgs = parse(args, options);
 	var items = get(parsedArgs);
-	console.dir(items);
 	generate(items, options);
 }
 
