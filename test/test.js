@@ -22,6 +22,22 @@ test('generate screenshot', function (t) {
 	});
 });
 
+test('generates screenshot from url without top level domain', function (t) {
+	t.plan(2);
+
+	var cp = spawn('../cli.js', ['http://google', '320x240'], {
+		stdio: [process.stdin, null, null]
+	});
+
+	cp.on('close', function () {
+		t.assert(pathExists.sync('google.com-320x240.png'));
+
+		fs.unlink('google.com-320x240.png', function (err) {
+			t.assert(!err, err);
+		});
+	});
+});
+
 test('generate screenshots from a list of screen resolutions', function (t) {
 	t.plan(4);
 
