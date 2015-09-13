@@ -16,17 +16,17 @@ var parseHeaders = require('parse-headers');
 var pkg = require('./package.json');
 
 var options = subarg(process.argv.slice(2), {
-	boolean: [
+	'boolean': [
 		'verbose',
 		'crop',
 		'help',
 		'version'
 	],
-	default: {
+	'default': {
 		delay: 0,
 		scale: 1
 	},
-	alias: {
+	'alias': {
 		v: 'verbose',
 		c: 'crop',
 		d: 'delay'
@@ -161,9 +161,40 @@ function parse(args, globalOptions) {
 			options.hide = arrify(options.hide);
 		}
 
-		var url = arrayUniq(arg.filter(/./.test, /\.|localhost/));
-		var sizes = arrayUniq(arg.filter(/./.test, /^\d{3,4}x\d{3,4}$/i));
-		var keywords = arrayDiffer(arg, url.concat(sizes));
+		var basicUrlRegex = /\./;
+		var urlRegex = /(http(s)?:\/\/)(www\.)?([^.]+)(\..{2,3})?|localhost/;
+		var sizeRegex = /^\d{3,4}x\d{3,4}$/i;
+
+		var url = arrayUniq(arg.filter(function (a) {
+			return urlRegex.test(a) || basicUrlRegex.test(a);
+		}));
+
+		var originalUrls = [].concat(url);
+
+		url = arrayUniq(url.map(function (u) {
+			if (u === 'localhost' || basicUrlRegex.test(u)) {
+				return u;
+			}
+			var ret = u;
+			var matches = u.match(urlRegex);
+			if (!matches[3]) {
+				if (matches[2]) {
+					ret = ret.substring(0, 8) + 'www.' + ret.substring(8);
+				} else {
+					ret = ret.substring(0, 7) + 'www.' + ret.substring(7);
+				}
+			}
+			if (!matches[5]) {
+				ret += '.com';
+			}
+			return ret;
+		}));
+
+		var sizes = arrayUniq(arg.filter(function (a) {
+			return sizeRegex.test(a);
+		}));
+
+		var keywords = arrayDiffer(arg, url.concat(sizes).concat(originalUrls));
 
 		return {
 			url: url,
@@ -205,7 +236,7 @@ function init(args, options) {
 
 	var parsedArgs = parse(args, options);
 	var items = get(parsedArgs);
-
+	console.dir(items);
 	generate(items, options);
 }
 
