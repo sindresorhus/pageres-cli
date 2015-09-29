@@ -16,17 +16,17 @@ var parseHeaders = require('parse-headers');
 var pkg = require('./package.json');
 
 var options = subarg(process.argv.slice(2), {
-	'boolean': [
+	boolean: [
 		'verbose',
 		'crop',
 		'help',
 		'version'
 	],
-	'default': {
+	default: {
 		delay: 0,
 		scale: 1
 	},
-	'alias': {
+	alias: {
 		v: 'verbose',
 		c: 'crop',
 		d: 'delay'
@@ -161,12 +161,11 @@ function parse(args, globalOptions) {
 			options.hide = arrify(options.hide);
 		}
 
-		// var basicUrlRegex = /\.|localhost/;
-		var urlRegex = /(http(s)?:\/\/)([^.]+)|localhost|\./;
+		var urlRegex = /https?:\/\/|localhost|\./;
 		var sizeRegex = /^\d{3,4}x\d{3,4}$/i;
 
 		var url = arrayUniq(arg.filter(function (a) {
-			return urlRegex.test(a); // || basicUrlRegex.test(a);
+			return urlRegex.test(a);
 		}));
 
 		var sizes = arrayUniq(arg.filter(function (a) {
@@ -215,6 +214,7 @@ function init(args, options) {
 
 	var parsedArgs = parse(args, options);
 	var items = get(parsedArgs);
+
 	generate(items, options);
 }
 
