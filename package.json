@@ -58,7 +58,6 @@
     "array-differ": "^1.0.0",
     "array-uniq": "^1.0.2",
     "arrify": "^1.0.0",
-    "get-stream": "^1.0.0",
     "log-symbols": "^1.0.0",
     "meow": "^3.5.0",
     "multiline": "^1.0.0",
@@ -70,6 +69,7 @@
   },
   "devDependencies": {
     "ava": "*",
+    "get-exec-file": "^1.0.0",
     "path-exists": "^1.0.0",
     "xo": "*"
   },

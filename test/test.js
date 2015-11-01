@@ -2,20 +2,16 @@ import fs from 'fs';
 import {spawn} from 'child_process';
 import test from 'ava';
 import pathExists from 'path-exists';
-import getStream from 'get-stream';
+import execFile from 'get-exec-file';
 import {version as pkgVersion} from '../package.json';
 
 process.chdir(__dirname);
 
-test.serial('generate screenshot', t => {
-	const cp = spawn('../cli.js', ['yeoman.io', '320x240']);
+test.serial('generate screenshot', async t => {
+	await execFile('../cli.js', ['yeoman.io', '320x240']);
 
-	cp.on('close', () => {
-		t.true(pathExists.sync('yeoman.io-320x240.png'));
-		fs.unlinkSync('yeoman.io-320x240.png');
-
-		t.end();
-	});
+	t.true(pathExists.sync('yeoman.io-320x240.png'));
+	fs.unlinkSync('yeoman.io-320x240.png');
 });
 
 test('remove temporary files on cancel', t => {
@@ -31,41 +27,35 @@ test('remove temporary files on cancel', t => {
 });
 
 test('show error if no url is specified', async t => {
-	const data = await getStream(spawn('../cli.js', ['320x240']).stderr);
-
-	t.regexTest(/Specify a url/, data);
+	try {
+		const {stderr} = await execFile('../cli.js', ['320x240']);
+	} catch (err) {
+		t.regexTest(/Specify a url/, err.stderr);
+	}
 });
 
-test('use 1366x768 as default resolution', t => {
-	t.plan(1);
+test('use 1366x768 as default resolution', async t => {
+	await execFile('../cli.js', ['yeoman.io']);
 
-	const cp = spawn('../cli.js', ['yeoman.io']);
-
-	cp.on('close', () => {
-		t.true(pathExists.sync('yeoman.io-1366x768.png'));
-		fs.unlinkSync('yeoman.io-1366x768.png');
-	});
+	t.true(pathExists.sync('yeoman.io-1366x768.png'));
+	fs.unlinkSync('yeoman.io-1366x768.png');
 });
 
-test('generate screenshots using keywords', t => {
-	t.plan(1);
+test('generate screenshots using keywords', async t => {
+	await execFile('../cli.js', ['yeoman.io', 'iphone5s']);
 
-	const cp = spawn('../cli.js', ['yeoman.io', 'iphone5s']);
-
-	cp.on('close', () => {
-		t.true(pathExists.sync('yeoman.io-320x568.png'));
-		fs.unlinkSync('yeoman.io-320x568.png');
-	});
+	t.true(pathExists.sync('yeoman.io-320x568.png'));
+	fs.unlinkSync('yeoman.io-320x568.png');
 });
 
 test('show help screen', async t => {
-	const data = await getStream(spawn('../cli.js', ['--help']).stdout);
+	const {stdout} = await execFile('../cli.js', ['--help']);
 
-	t.regexTest(/Capture screenshots of websites in various resolutions./, data);
+	t.regexTest(/Capture screenshots of websites in various resolutions./, stdout);
 });
 
 test('show version', async t => {
-	const data = await getStream(spawn('../cli.js', ['--version']).stdout);
+	const {stdout} = await execFile('../cli.js', ['--version']);
 
-	t.regexTest(new RegExp(pkgVersion), data)
+	t.regexTest(new RegExp(pkgVersion), stdout)
 });
