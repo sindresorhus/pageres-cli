@@ -3,7 +3,6 @@
 'use strict';
 var multiline = require('multiline');
 var updateNotifier = require('update-notifier');
-var getStdin = require('get-stdin');
 var sudoBlock = require('sudo-block');
 var logSymbols = require('log-symbols');
 var arrayUniq = require('array-uniq');
@@ -203,11 +202,4 @@ function init(args, options) {
 sudoBlock();
 updateNotifier({pkg: pkg}).notify();
 
-if (process.stdin.isTTY) {
-	init(cli.input, cli.flags);
-} else {
-	getStdin().then(function (data) {
-		[].push.apply(cli.input, data.trim().split(/\r?\n/));
-		init(cli.input, cli.flags);
-	});
-}
+init(cli.input, cli.flags);

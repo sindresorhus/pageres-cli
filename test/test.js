@@ -2,137 +2,78 @@ import fs from 'fs';
 import {spawn} from 'child_process';
 import test from 'ava';
 import pathExists from 'path-exists';
+import {version as pkgVersion} from '../package.json';
 
 process.chdir(__dirname);
 
-test.serial('generate screenshot', function (t) {
-	t.plan(2);
+test.serial('generate screenshot', t => {
+	const cp = spawn('../cli.js', ['yeoman.io', '320x240']);
 
-	var cp = spawn('../cli.js', ['yeoman.io', '320x240'], {
-		stdio: [process.stdin, null, null]
-	});
-
-	cp.on('close', function () {
+	cp.on('close', () => {
 		t.assert(pathExists.sync('yeoman.io-320x240.png'));
+		fs.unlinkSync('yeoman.io-320x240.png');
 
-		fs.unlink('yeoman.io-320x240.png', function (err) {
-			t.ifError(err);
-		});
+		t.end();
 	});
 });
 
-// test('generate screenshots from a list of screen resolutions', t => {
-// 	const read = fs.createReadStream('fixture.txt');
-// 	const cp = spawn('../cli.js', ['yeoman.io']);
+test('remove temporary files on cancel', t => {
+	t.plan(1);
 
-// 	cp.on('close', function () {
-// 		t.true(pathExists.sync('yeoman.io-1440x900.png'));
-// 		t.true(pathExists.sync('yeoman.io-1280x1024.png'));
-// 		t.true(pathExists.sync('yeoman.io-768x1024.png'));
-// 		fs.unlinkSync('yeoman.io-1440x900.png');
-// 		fs.unlinkSync('yeoman.io-1280x1024.png');
-// 		fs.unlinkSync('yeoman.io-768x1024.png');
+	const cp = spawn('../cli.js', ['yeoman.io', '320x240']);
 
-// 		t.end();
-// 	});
+	cp.on('exit', () => t.false(pathExists.sync('yeoman.io-320x240.png')));
 
-// 	read.pipe(cp.stdin);
-// });
+	setTimeout(() => {
+		cp.kill('SIGINT');
+	}, 500);
+});
 
-// test('remove temporary files on cancel', t => {
-// 	t.plan(1);
+test('show error if no url is specified', t => {
+	t.plan(1);
 
-// 	const cp = spawn('../cli.js', ['yeoman.io', '320x240'], {
-// 		stdio: [process.stdin, null, null]
-// 	});
+	const cp = spawn('../cli.js', ['320x240']);
 
-// 	cp.on('exit', function () {
-// 		const files = fs.readdirSync(__dirname);
+	cp.stderr.setEncoding('utf8');
+	cp.stderr.on('data', data => t.regexTest(/Specify a url/, data));
+});
 
-// 		t.true(files.indexOf('yeoman.io-320x240.png') === -1);
-// 	});
+test('use 1366x768 as default resolution', t => {
+	t.plan(1);
 
-// 	setTimeout(function () {
-// 		cp.kill('SIGINT');
-// 	}, 500);
-// });
+	const cp = spawn('../cli.js', ['yeoman.io']);
 
-// test('show error if no url is specified', function (t) {
-// 	t.plan(1);
+	cp.on('close', () => {
+		t.true(pathExists.sync('yeoman.io-1366x768.png'));
+		fs.unlinkSync('yeoman.io-1366x768.png');
+	});
+});
 
-// 	var cp = spawn('../cli.js', ['320x240'], {
-// 		stdio: [process.stdin, null, null]
-// 	});
+test('generate screenshots using keywords', t => {
+	t.plan(1);
 
-// 	cp.stderr.setEncoding('utf8');
-// 	cp.stderr.on('data', function (data) {
-// 		t.assert(/Specify a url/.test(data), data);
-// 	});
-// });
+	const cp = spawn('../cli.js', ['yeoman.io', 'iphone5s']);
 
-// test('use 1366x768 as default resolution', function (t) {
-// 	t.plan(2);
+	cp.on('close', () => {
+		t.true(pathExists.sync('yeoman.io-320x568.png'));
+		fs.unlinkSync('yeoman.io-320x568.png');
+	});
+});
 
-// 	var cp = spawn('../cli.js', ['yeoman.io'], {
-// 		stdio: [process.stdin, null, null]
-// 	});
+test('show help screen', t => {
+	t.plan(1);
 
-// 	cp.on('close', function () {
-// 		t.assert(pathExists.sync('yeoman.io-1366x768.png'));
+	const cp = spawn('../cli.js', ['--help']);
 
-// 		fs.unlink('yeoman.io-1366x768.png', function (err) {
-// 			t.assert(!err, err);
-// 		});
-// 	});
-// });
+	cp.stdout.setEncoding('utf8');
+	cp.stdout.on('data', data => t.regexTest(/Capture screenshots of websites in various resolutions./, data));
+});
 
-// test('generate screenshots using keywords', function (t) {
-// 	t.plan(2);
+test('show version', t => {
+	t.plan(1);
 
-// 	var cp = spawn('../cli.js', ['yeoman.io', 'iphone5s'], {
-// 		stdio: [process.stdin, null, null]
-// 	});
+	const cp = spawn('../cli.js', ['--version']);
 
-// 	cp.on('close', function () {
-// 		t.assert(pathExists.sync('yeoman.io-320x568.png'));
-
-// 		fs.unlink('yeoman.io-320x568.png', function (err) {
-// 			t.assert(!err, err);
-// 		});
-// 	});
-// });
-
-// test('show help screen', function (t) {
-// 	t.plan(1);
-
-// 	var cp = spawn('../cli.js', ['--help']);
-
-// 	cp.stdout.setEncoding('utf8');
-// 	cp.stdout.on('data', function (data) {
-// 		console.log(data);
-
-// 		t.assert(/Capture screenshots of websites in various resolutions./.test(data), data);
-// 	});
-
-// 	cp.stderr.on('data', function (data) {
-// 		console.log(data);
-// 	});
-
-// 	cp.on('close', function () {
-// 		console.log('closed');
-// 	});
-// });
-
-// test('show version', function (t) {
-// 	t.plan(1);
-
-// 	var cp = spawn('../cli.js', ['--version'], {
-// 		stdio: [process.stdin, null, null]
-// 	});
-
-// 	cp.stdout.setEncoding('utf8');
-// 	cp.stdout.on('data', function (data) {
-// 		var regex = new RegExp(require('../package.json').version);
-// 		t.assert(regex.test(data), data);
-// 	});
-// });
+	cp.stdout.setEncoding('utf8');
+	cp.stdout.on('data', data => t.regexTest(new RegExp(pkgVersion), data));
+});
