@@ -58,6 +58,7 @@
     "array-differ": "^1.0.0",
     "array-uniq": "^1.0.2",
     "arrify": "^1.0.0",
+    "get-stream": "^1.0.0",
     "log-symbols": "^1.0.0",
     "meow": "^3.5.0",
     "multiline": "^1.0.0",
@@ -71,5 +72,10 @@
     "ava": "*",
     "path-exists": "^1.0.0",
     "xo": "*"
+  },
+  "xo": {
+    "ignores": [
+      "test/test.js"
+    ]
   }
 }
