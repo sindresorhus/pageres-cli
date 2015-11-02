@@ -26,7 +26,8 @@ test('remove temporary files on cancel', t => {
 	}, 500);
 });
 
-test('show error if no url is specified', async t => {
+test('show error if no url is specified', t => {
+	t.plan(1);
 	t.throws(execFile('../cli.js', ['320x240']), /Specify a url/);
 });
 
