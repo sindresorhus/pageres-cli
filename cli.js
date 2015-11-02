@@ -3,6 +3,7 @@
 'use strict';
 var multiline = require('multiline');
 var updateNotifier = require('update-notifier');
+var subarg = require('subarg');
 var sudoBlock = require('sudo-block');
 var logSymbols = require('log-symbols');
 var arrayUniq = require('array-uniq');
@@ -13,6 +14,22 @@ var Pageres = require('pageres');
 var parseHeaders = require('parse-headers');
 var meow = require('meow');
 var pkg = require('./package.json');
+
+var options = {
+	boolean: [
+		'verbose',
+		'crop'
+	],
+	default: {
+		delay: 0,
+		scale: 1
+	},
+	alias: {
+		v: 'verbose',
+		c: 'crop',
+		d: 'delay'
+	}
+};
 
 var cli = meow(multiline(function () {
 /*
@@ -54,21 +71,7 @@ var cli = meow(multiline(function () {
   <url> can also be a local file path.
 
   You can also pipe in a newline separated list of urls and screen resolutions which will get merged with the arguments.
-*/}), {
-	boolean: [
-		'verbose',
-		'crop'
-	],
-	default: {
-		delay: 0,
-		scale: 1
-	},
-	alias: {
-		v: 'verbose',
-		c: 'crop',
-		d: 'delay'
-	}
-});
+*/}), options);
 
 function generate(args, options) {
 	var pageres = new Pageres()
@@ -81,8 +84,6 @@ function generate(args, options) {
 	if (options.verbose) {
 		pageres.on('warn', console.error.bind(console));
 	}
-
-	console.log('run pageres');
 
 	pageres.run()
 		.then(function () {
@@ -176,8 +177,7 @@ function parse(args, globalOptions) {
 
 function init(args, options) {
 	if (args.length === 0) {
-		console.log(cli.help);
-		process.exit(1);
+		cli.showHelp(1);
 	}
 
 	var nonGroupedArgs = args.filter(function (arg) {
@@ -202,4 +202,4 @@ function init(args, options) {
 sudoBlock();
 updateNotifier({pkg: pkg}).notify();
 
-init(cli.input, cli.flags);
+init(subarg(cli.input, options)._, cli.flags);

@@ -27,11 +27,7 @@ test('remove temporary files on cancel', t => {
 });
 
 test('show error if no url is specified', async t => {
-	try {
-		const {stderr} = await execFile('../cli.js', ['320x240']);
-	} catch (err) {
-		t.regexTest(/Specify a url/, err.stderr);
-	}
+	t.throws(execFile('../cli.js', ['320x240']), /Specify a url/);
 });
 
 test('use 1366x768 as default resolution', async t => {
