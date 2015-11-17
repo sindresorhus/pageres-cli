@@ -42,13 +42,6 @@ pageres todomvc.com yeoman.io 1024x768 # 2 screenshots
 pageres todomvc.com yeoman.io 1024x768 1366x768 # 4 screenshots
 ```
 
-Pipe in a newline separated list of urls and screen resolutions which will get merged with the arguments.
-
-```sh
-# In this case a list of screen resolutions
-pageres <url> < screen-resolutions.txt
-```
-
 Group arguments with square brackets.
 
 ```sh
@@ -200,7 +193,7 @@ You can use the most popular resolutions for your site with `pageres` by followi
 - Click the `Screen Resolution` link in the middle of the screen
 - Click the `Export` button at the top, then `Google Spreadsheets`, and select yes for importing
 - Select all the resolutions and copy them into a new file and save it
-- In your terminal run: `pageres website.com < file-from-above-step.txt`
+- In your terminal run: `pageres website.com $(awk '{a = $1 " " a} END {print a}' file-from-above-step.txt)`
 
 
 ## License

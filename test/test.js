@@ -5,9 +5,7 @@ import pathExists from 'path-exists';
 import execFile from 'get-exec-file';
 import {version as pkgVersion} from '../package.json';
 
-process.chdir(__dirname);
-
-test.serial('generate screenshot', async t => {
+test('generate screenshot', async t => {
 	await execFile('../cli.js', ['yeoman.io', '320x240']);
 
 	t.true(pathExists.sync('yeoman.io-320x240.png'));
@@ -54,5 +52,5 @@ test('show help screen', async t => {
 test('show version', async t => {
 	const {stdout} = await execFile('../cli.js', ['--version']);
 
-	t.regexTest(new RegExp(pkgVersion), stdout)
+	t.is(stdout.trim(), pkgVersion);
 });

@@ -13,7 +13,6 @@ var objectAssign = require('object-assign');
 var Pageres = require('pageres');
 var parseHeaders = require('parse-headers');
 var meow = require('meow');
-var pkg = require('./package.json');
 
 var options = {
 	boolean: [
@@ -43,16 +42,13 @@ var cli = meow(multiline(function () {
     pageres <url> <resolution>
     pageres [ <url> <resolution> ] [ <url> <resolution> ]
     pageres [ <url> <resolution> ... ] < <file>
-    cat <file> | pageres [ <url> <resolution> ... ]
 
   Example
     pageres todomvc.com yeoman.io 1366x768 1600x900
     pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
     pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
     pageres yeoman.io 1366x768 --selector='.page-header'
-    pageres --delay 3 1366x768 < urls.txt
     pageres unicorn.html 1366x768
-    cat screen-resolutions.txt | pageres todomvc.com yeoman.io
 
   Options
     -v, --verbose            Verbose output
@@ -69,8 +65,6 @@ var cli = meow(multiline(function () {
     --format=<string>        Image format
 
   <url> can also be a local file path.
-
-  You can also pipe in a newline separated list of urls and screen resolutions which will get merged with the arguments.
 */}), options);
 
 function generate(args, options) {
@@ -200,6 +194,6 @@ function init(args, options) {
 }
 
 sudoBlock();
-updateNotifier({pkg: pkg}).notify();
+updateNotifier({pkg: cli.pkg}).notify();
 
 init(subarg(cli.input, options)._, cli.flags);
