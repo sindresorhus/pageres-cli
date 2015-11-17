@@ -87,9 +87,6 @@ pageres --delay 3 1366x768 < urls.txt
 
 # Capture a local file
 pageres unicorn.html 1366x768
-
-# Pipe in resolutions
-cat screen-resolutions.txt | pageres todomvc.com yeoman.io
 ```
 
 ### Options

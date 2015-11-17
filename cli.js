@@ -3,7 +3,6 @@
 'use strict';
 var multiline = require('multiline');
 var updateNotifier = require('update-notifier');
-var getStdin = require('get-stdin');
 var subarg = require('subarg');
 var sudoBlock = require('sudo-block');
 var logSymbols = require('log-symbols');
@@ -13,14 +12,13 @@ var arrify = require('arrify');
 var objectAssign = require('object-assign');
 var Pageres = require('pageres');
 var parseHeaders = require('parse-headers');
+var meow = require('meow');
 var pkg = require('./package.json');
 
-var options = subarg(process.argv.slice(2), {
+var options = {
 	boolean: [
 		'verbose',
-		'crop',
-		'help',
-		'version'
+		'crop'
 	],
 	default: {
 		delay: 0,
@@ -31,14 +29,9 @@ var options = subarg(process.argv.slice(2), {
 		c: 'crop',
 		d: 'delay'
 	}
-});
+};
 
-var args = options._;
-
-delete options._;
-
-function showHelp() {
-	console.log(multiline(function () {
+var cli = meow(multiline(function () {
 /*
   Capture screenshots of websites in various resolutions.
 
@@ -78,8 +71,7 @@ function showHelp() {
   <url> can also be a local file path.
 
   You can also pipe in a newline separated list of urls and screen resolutions which will get merged with the arguments.
-	*/}));
-}
+*/}), options);
 
 function generate(args, options) {
 	var pageres = new Pageres()
@@ -93,18 +85,18 @@ function generate(args, options) {
 		pageres.on('warn', console.error.bind(console));
 	}
 
-	pageres.run(function (err) {
-		if (err) {
+	pageres.run()
+		.then(function () {
+			pageres.successMessage();
+		})
+		.catch(function (err) {
 			if (err.noStack) {
 				console.error(err.message);
 				process.exit(1);
 			} else {
 				throw err;
 			}
-		}
-
-		pageres.successMessage();
-	});
+		});
 }
 
 function get(args) {
@@ -184,19 +176,8 @@ function parse(args, globalOptions) {
 }
 
 function init(args, options) {
-	if (options.version) {
-		console.log(pkg.version);
-		process.exit();
-	}
-
-	if (options.help) {
-		showHelp();
-		process.exit();
-	}
-
 	if (args.length === 0) {
-		showHelp();
-		process.exit(1);
+		cli.showHelp(1);
 	}
 
 	var nonGroupedArgs = args.filter(function (arg) {
@@ -221,11 +202,4 @@ function init(args, options) {
 sudoBlock();
 updateNotifier({pkg: pkg}).notify();
 
-if (process.stdin.isTTY) {
-	init(args, options);
-} else {
-	getStdin(function (data) {
-		[].push.apply(args, data.trim().split(/\r?\n/));
-		init(args, options);
-	});
-}
+init(subarg(cli.input, options)._, cli.flags);
