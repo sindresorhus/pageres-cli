@@ -41,7 +41,6 @@ var cli = meow(multiline(function () {
   Usage
     pageres <url> <resolution>
     pageres [ <url> <resolution> ] [ <url> <resolution> ]
-    pageres [ <url> <resolution> ... ] < <file>
 
   Example
     pageres todomvc.com yeoman.io 1366x768 1600x900

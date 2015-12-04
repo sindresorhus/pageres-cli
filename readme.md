@@ -75,9 +75,6 @@ pageres yeoman.io 1366x768 --selector='.page-header'
 # Hide a specific element
 pageres yeoman.io 1366x768 --hide='.page-header'
 
-# Delay and pipe in a list of urls
-pageres --delay 3 1366x768 < urls.txt
-
 # Capture a local file
 pageres unicorn.html 1366x768
 ```

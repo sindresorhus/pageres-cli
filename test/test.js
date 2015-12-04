@@ -12,21 +12,23 @@ test('generate screenshot', async t => {
 	fs.unlinkSync('yeoman.io-320x240.png');
 });
 
-test('remove temporary files on cancel', t => {
+test.cb('remove temporary files on cancel', t => {
 	t.plan(1);
 
 	const cp = spawn('../cli.js', ['yeoman.io', '320x240']);
 
-	cp.on('exit', () => t.false(pathExists.sync('yeoman.io-320x240.png')));
+	cp.on('exit', () => {
+		t.false(pathExists.sync('yeoman.io-320x240.png'));
+		t.end();
+	});
 
 	setTimeout(() => {
 		cp.kill('SIGINT');
 	}, 500);
 });
 
-test('show error if no url is specified', t => {
-	t.plan(1);
-	t.throws(execFile('../cli.js', ['320x240']), /Specify a url/);
+test('show error if no url is specified', async t => {
+	await t.throws(execFile('../cli.js', ['320x240']), /Specify a url/);
 });
 
 test('use 1366x768 as default resolution', async t => {
