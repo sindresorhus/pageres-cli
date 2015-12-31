@@ -1,4 +1,4 @@
-# pageres-cli [![Build Status](https://travis-ci.org/sindresorhus/pageres-cli.svg?branch=master)](https://travis-ci.org/sindresorhus/pageres-cli) [![](http://img.shields.io/badge/unicorn-approved-ff69b4.svg)](https://www.youtube.com/watch?v=9auOCbH5Ns4)
+# pageres-cli [![Build Status](https://travis-ci.org/sindresorhus/pageres-cli.svg?branch=master)](https://travis-ci.org/sindresorhus/pageres-cli) [![](https://img.shields.io/badge/unicorn-approved-ff69b4.svg)](https://www.youtube.com/watch?v=9auOCbH5Ns4)
 
 ![](screenshot.png)
 
