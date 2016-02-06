@@ -133,6 +133,15 @@ Override a global crop option within a group.
 $ pageres [ yeoman.io 1366x768 --no-crop ] todomvc.com 1024x768 --crop
 ```
 
+##### `--css=<string>`
+
+Apply custom CSS to the webpage. Specify some CSS or the path to a CSS file.
+
+```
+$ pageres todomvc.com --css="body { background: red; }"
+$ pageres todomvc.com --css=style.css
+```
+
 ##### `--cookie=<cookie>`
 
 Browser cookie. Can be set multiple times.

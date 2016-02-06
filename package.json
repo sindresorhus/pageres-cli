@@ -61,7 +61,7 @@
     "meow": "^3.5.0",
     "multiline": "^1.0.0",
     "object-assign": "^4.0.1",
-    "pageres": "^4.0.0",
+    "pageres": "^4.1.0",
     "parse-headers": "^2.0.0",
     "subarg": "^1.0.0",
     "sudo-block": "^1.0.0",
