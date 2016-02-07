@@ -62,6 +62,7 @@ var cli = meow(multiline(function () {
     --password=<password>    Password for HTTP auth
     --scale=<number>         Scale webpage
     --format=<string>        Image format
+    --css=<string>           Apply custom CSS
 
   <url> can also be a local file path.
 */}), options);
