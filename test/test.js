@@ -48,7 +48,7 @@ test('generate screenshots using keywords', async t => {
 test('show help screen', async t => {
 	const {stdout} = await execFile('../cli.js', ['--help']);
 
-	t.regexTest(/Capture screenshots of websites in various resolutions./, stdout);
+	t.regex(stdout, /Capture screenshots of websites in various resolutions./);
 });
 
 test('show version', async t => {
