@@ -5,6 +5,8 @@ import test from 'ava';
 import pathExists from 'path-exists';
 import {version as pkgVersion} from '../package.json';
 
+process.chdir(__dirname);
+
 test('generate screenshot', async t => {
 	await execa('../cli.js', ['yeoman.io', '320x240']);
 
