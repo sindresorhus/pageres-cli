@@ -1,12 +1,12 @@
 import fs from 'fs';
 import {spawn} from 'child_process';
+import execa from 'execa';
 import test from 'ava';
 import pathExists from 'path-exists';
-import execFile from 'get-exec-file';
 import {version as pkgVersion} from '../package.json';
 
 test('generate screenshot', async t => {
-	await execFile('../cli.js', ['yeoman.io', '320x240']);
+	await execa('../cli.js', ['yeoman.io', '320x240']);
 
 	t.true(pathExists.sync('yeoman.io-320x240.png'));
 	fs.unlinkSync('yeoman.io-320x240.png');
@@ -27,32 +27,28 @@ test.cb('remove temporary files on cancel', t => {
 	}, 500);
 });
 
-test('show error if no url is specified', async t => {
-	await t.throws(execFile('../cli.js', ['320x240']), /Specify a url/);
+test('show error if no url is specified', t => {
+	t.throws(execa('../cli.js', ['320x240']), /Specify a url/);
 });
 
 test('use 1366x768 as default resolution', async t => {
-	await execFile('../cli.js', ['yeoman.io']);
+	await execa('../cli.js', ['yeoman.io']);
 
 	t.true(pathExists.sync('yeoman.io-1366x768.png'));
 	fs.unlinkSync('yeoman.io-1366x768.png');
 });
 
 test('generate screenshots using keywords', async t => {
-	await execFile('../cli.js', ['yeoman.io', 'iphone5s']);
+	await execa('../cli.js', ['yeoman.io', 'iphone5s']);
 
 	t.true(pathExists.sync('yeoman.io-320x568.png'));
 	fs.unlinkSync('yeoman.io-320x568.png');
 });
 
 test('show help screen', async t => {
-	const {stdout} = await execFile('../cli.js', ['--help']);
-
-	t.regex(stdout, /Capture screenshots of websites in various resolutions./);
+	t.regex(await execa.stdout('../cli.js', ['--help']), /Capture screenshots of websites in various resolutions./);
 });
 
 test('show version', async t => {
-	const {stdout} = await execFile('../cli.js', ['--version']);
-
-	t.is(stdout.trim(), pkgVersion);
+	t.is(await execa.stdout('../cli.js', ['--version']), pkgVersion);
 });
