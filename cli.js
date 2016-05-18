@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-inline-comments */
 'use strict';
 var multiline = require('multiline');
 var updateNotifier = require('update-notifier');
