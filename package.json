@@ -70,11 +70,11 @@
     "parse-headers": "^2.0.0",
     "subarg": "^1.0.0",
     "sudo-block": "^1.0.0",
-    "update-notifier": "^0.6.0"
+    "update-notifier": "^1.0.3"
   },
   "devDependencies": {
     "ava": "*",
-    "execa": "^0.4.0",
+    "execa": "^0.5.0",
     "xo": "*"
   },
   "xo": {
