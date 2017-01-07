@@ -62,7 +62,7 @@ const cli = meow(`
 `, options);
 
 function generate(args, options) {
-	const pageres = new Pageres()
+	const pageres = new Pageres({incrementalName: true})
 		.dest(process.cwd());
 
 	args.forEach(arg => {
