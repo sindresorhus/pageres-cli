@@ -1,19 +1,17 @@
 #!/usr/bin/env node
 'use strict';
-var multiline = require('multiline');
-var updateNotifier = require('update-notifier');
-var subarg = require('subarg');
-var sudoBlock = require('sudo-block');
-var logSymbols = require('log-symbols');
-var arrayUniq = require('array-uniq');
-var arrayDiffer = require('array-differ');
-var arrify = require('arrify');
-var objectAssign = require('object-assign');
-var Pageres = require('pageres');
-var parseHeaders = require('parse-headers');
-var meow = require('meow');
+const updateNotifier = require('update-notifier');
+const subarg = require('subarg');
+const sudoBlock = require('sudo-block');
+const logSymbols = require('log-symbols');
+const arrayUniq = require('array-uniq');
+const arrayDiffer = require('array-differ');
+const arrify = require('arrify');
+const Pageres = require('pageres');
+const parseHeaders = require('parse-headers');
+const meow = require('meow');
 
-var options = {
+const options = {
 	boolean: [
 		'verbose',
 		'crop'
@@ -29,48 +27,45 @@ var options = {
 	}
 };
 
-var cli = meow(multiline(function () {
-/*
-  Capture screenshots of websites in various resolutions.
+const cli = meow(`
+	Specify urls and screen resolutions as arguments. Order doesn't matter.
+	Group arguments with [ ]. Options defined inside a group will override the outer ones.
+	Screenshots are saved in the current directory.
 
-  Specify urls and screen resolutions as arguments. Order doesn't matter.
-  Group arguments with [ ]. Options defined inside a group will override the outer ones.
-  Screenshots are saved in the current directory.
+	Usage
+	  pageres <url> <resolution>
+	  pageres [ <url> <resolution> ] [ <url> <resolution> ]
 
-  Usage
-    pageres <url> <resolution>
-    pageres [ <url> <resolution> ] [ <url> <resolution> ]
+	Example
+	  pageres todomvc.com yeoman.io 1366x768 1600x900
+	  pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
+	  pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
+	  pageres yeoman.io 1366x768 --selector='.page-header'
+	  pageres unicorn.html 1366x768
 
-  Example
-    pageres todomvc.com yeoman.io 1366x768 1600x900
-    pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
-    pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
-    pageres yeoman.io 1366x768 --selector='.page-header'
-    pageres unicorn.html 1366x768
+	Options
+	  -v, --verbose            Verbose output
+	  -c, --crop               Crop to the set height
+	  -d, --delay=<seconds>    Delay screenshot capture
+	  --filename=<template>    Custom filename
+	  --selector=<element>     Capture DOM element
+	  --hide=<element>         Hide DOM element (Can be set multiple times)
+	  --cookie=<cookie>        Browser cookie (Can be set multiple times)
+	  --header=<string>        Custom HTTP request header (Can be set multiple times)
+	  --username=<username>    Username for HTTP auth
+	  --password=<password>    Password for HTTP auth
+	  --scale=<number>         Scale webpage
+	  --format=<string>        Image format
+	  --css=<string>           Apply custom CSS
 
-  Options
-    -v, --verbose            Verbose output
-    -c, --crop               Crop to the set height
-    -d, --delay=<seconds>    Delay screenshot capture
-    --filename=<template>    Custom filename
-    --selector=<element>     Capture DOM element
-    --hide=<element>         Hide DOM element (Can be set multiple times)
-    --cookie=<cookie>        Browser cookie (Can be set multiple times)
-    --header=<string>        Custom HTTP request header (Can be set multiple times)
-    --username=<username>    Username for HTTP auth
-    --password=<password>    Password for HTTP auth
-    --scale=<number>         Scale webpage
-    --format=<string>        Image format
-    --css=<string>           Apply custom CSS
-
-  <url> can also be a local file path.
-*/}), options);
+	<url> can also be a local file path.
+`, options);
 
 function generate(args, options) {
-	var pageres = new Pageres()
+	const pageres = new Pageres()
 		.dest(process.cwd());
 
-	args.forEach(function (arg) {
+	args.forEach(arg => {
 		pageres.src(arg.url, arg.sizes, arg.options);
 	});
 
@@ -79,10 +74,10 @@ function generate(args, options) {
 	}
 
 	pageres.run()
-		.then(function () {
+		.then(() => {
 			pageres.successMessage();
 		})
-		.catch(function (err) {
+		.catch(err => {
 			if (err.noStack) {
 				console.error(err.message);
 				process.exit(1);
@@ -93,23 +88,23 @@ function generate(args, options) {
 }
 
 function get(args) {
-	var ret = [];
+	const ret = [];
 
-	args.forEach(function (arg) {
-		if (!arg.url.length) {
+	args.forEach(arg => {
+		if (arg.url.length === 0) {
 			console.error(logSymbols.warning, 'Specify a url');
 			process.exit(1);
 		}
 
-		if (!arg.sizes.length && !arg.keywords.length) {
+		if (arg.sizes.length === 0 && arg.keywords.length === 0) {
 			arg.sizes = ['1366x768'];
 		}
 
-		if (arg.keywords.length) {
+		if (arg.keywords.length > 0) {
 			arg.sizes = arg.sizes.concat(arg.keywords);
 		}
 
-		arg.url.forEach(function (el) {
+		arg.url.forEach(el => {
 			ret.push({
 				url: el,
 				sizes: arg.sizes,
@@ -122,8 +117,8 @@ function get(args) {
 }
 
 function parse(args, globalOptions) {
-	return args.map(function (arg) {
-		var options = objectAssign({}, globalOptions, arg);
+	return args.map(arg => {
+		const options = Object.assign({}, globalOptions, arg);
 
 		arg = arg._;
 		delete options._;
@@ -136,7 +131,7 @@ function parse(args, globalOptions) {
 			options.header = parseHeaders(arrify(options.header).join('\n'));
 		}
 
-		// plural makes more sense for programmatic options
+		// Plural makes more sense for programmatic options
 		options.cookies = options.cookie;
 		options.headers = options.header;
 		delete options.cookie;
@@ -146,24 +141,17 @@ function parse(args, globalOptions) {
 			options.hide = arrify(options.hide);
 		}
 
-		var urlRegex = /https?:\/\/|localhost|\./;
-		var sizeRegex = /^\d{3,4}x\d{3,4}$/i;
-
-		var url = arrayUniq(arg.filter(function (a) {
-			return urlRegex.test(a);
-		}));
-
-		var sizes = arrayUniq(arg.filter(function (a) {
-			return sizeRegex.test(a);
-		}));
-
-		var keywords = arrayDiffer(arg, url.concat(sizes));
+		const urlRegex = /https?:\/\/|localhost|\./;
+		const sizeRegex = /^\d{3,4}x\d{3,4}$/i;
+		const url = arrayUniq(arg.filter(x => urlRegex.test(x)));
+		const sizes = arrayUniq(arg.filter(x => sizeRegex.test(x)));
+		const keywords = arrayDiffer(arg, url.concat(sizes));
 
 		return {
-			url: url,
-			sizes: sizes,
-			keywords: keywords,
-			options: options
+			url,
+			sizes,
+			keywords,
+			options
 		};
 	});
 }
@@ -173,21 +161,17 @@ function init(args, options) {
 		cli.showHelp(1);
 	}
 
-	var nonGroupedArgs = args.filter(function (arg) {
-		return !arg._;
-	});
+	const nonGroupedArgs = args.filter(x => !x._);
 
-	// filter grouped args
-	args = args.filter(function (arg) {
-		return arg._;
-	});
+	// Filter grouped args
+	args = args.filter(x => x._);
 
-	if (nonGroupedArgs.length) {
+	if (nonGroupedArgs.length > 0) {
 		args.push({_: nonGroupedArgs});
 	}
 
-	var parsedArgs = parse(args, options);
-	var items = get(parsedArgs);
+	const parsedArgs = parse(args, options);
+	const items = get(parsedArgs);
 
 	generate(items, options);
 }

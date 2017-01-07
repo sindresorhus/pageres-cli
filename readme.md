@@ -204,4 +204,4 @@ You can use the most popular resolutions for your site with `pageres` by followi
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)
