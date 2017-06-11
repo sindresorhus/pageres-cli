@@ -178,6 +178,10 @@ Image format. Either `png` *(default)* or `jpg`.
 
 Custom user agent.
 
+##### `--transparent`
+
+Set background color to `transparent` instead of `white` if no background is set.
+
 
 ## Config file
 
