@@ -28,8 +28,8 @@ test.cb('remove temporary files on cancel', t => {
 	}, 500);
 });
 
-test('show error if no url is specified', t => {
-	t.throws(execa('../cli.js', ['320x240']), /Specify a url/);
+test('show error if no url is specified', async t => {
+	await t.throws(execa('../cli.js', ['320x240']), /Specify a url/);
 });
 
 test('use 1366x768 as default resolution', async t => {
