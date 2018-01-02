@@ -14,7 +14,8 @@ const meow = require('meow');
 const options = {
 	boolean: [
 		'verbose',
-		'crop'
+		'crop',
+		'overwrite'
 	],
 	default: {
 		delay: 0,
@@ -48,6 +49,7 @@ const cli = meow(`
 	  -c, --crop               Crop to the set height
 	  -d, --delay=<seconds>    Delay screenshot capture
 	  --filename=<template>    Custom filename
+	  --overwrite              Overwrite file if it exists
 	  --selector=<element>     Capture DOM element
 	  --hide=<element>         Hide DOM element (Can be set multiple times)
 	  --cookie=<cookie>        Browser cookie (Can be set multiple times)
@@ -62,7 +64,7 @@ const cli = meow(`
 `, options);
 
 function generate(args, options) {
-	const pageres = new Pageres({incrementalName: true})
+	const pageres = new Pageres({incrementalName: !options.overwrite})
 		.dest(process.cwd());
 
 	args.forEach(arg => {
