@@ -39,6 +39,7 @@ const cli = meow(`
 
 	Example
 	  pageres todomvc.com yeoman.io 1366x768 1600x900
+	  pageres todomvc.com yeoman.io 1366x768 1600x900 --overwrite
 	  pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
 	  pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
 	  pageres yeoman.io 1366x768 --selector='.page-header'

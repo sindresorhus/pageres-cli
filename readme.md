@@ -109,6 +109,14 @@ Custom filename.
 $ pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
 ```
 
+##### `--overwrite`
+
+Overwrite file. Defaults to appending ` (n)` to the file name if `--overwrite` is not set.
+
+```
+$ pageres todomvc.com 1366x768 --overwrite
+```
+
 ##### `--selector=<element>`
 
 Capture DOM element.
