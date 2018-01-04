@@ -14,7 +14,8 @@ const meow = require('meow');
 const options = {
 	boolean: [
 		'verbose',
-		'crop'
+		'crop',
+		'overwrite'
 	],
 	default: {
 		delay: 0,
@@ -38,6 +39,7 @@ const cli = meow(`
 
 	Example
 	  pageres todomvc.com yeoman.io 1366x768 1600x900
+	  pageres todomvc.com yeoman.io 1366x768 1600x900 --overwrite
 	  pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
 	  pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
 	  pageres yeoman.io 1366x768 --selector='.page-header'
@@ -48,6 +50,7 @@ const cli = meow(`
 	  -c, --crop               Crop to the set height
 	  -d, --delay=<seconds>    Delay screenshot capture
 	  --filename=<template>    Custom filename
+	  --overwrite              Overwrite file if it exists
 	  --selector=<element>     Capture DOM element
 	  --hide=<element>         Hide DOM element (Can be set multiple times)
 	  --cookie=<cookie>        Browser cookie (Can be set multiple times)
@@ -62,7 +65,7 @@ const cli = meow(`
 `, options);
 
 function generate(args, options) {
-	const pageres = new Pageres({incrementalName: true})
+	const pageres = new Pageres({incrementalName: !options.overwrite})
 		.dest(process.cwd());
 
 	args.forEach(arg => {
