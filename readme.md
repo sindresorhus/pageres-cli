@@ -15,11 +15,11 @@ Capture screenshots of websites in various resolutions. A good way to make sure 
 $ npm install --global pageres-cli
 ```
 
+Note to Linux users: If you get a "No usable sandbox!" error, you need to enable [system sandboxing](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#setting-up-chrome-linux-sandbox).
+
 <a href="https://www.patreon.com/sindresorhus">
 	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
 </a>
-
-*PhantomJS, which is used for generating the screenshots, is installed automagically, but in some [rare cases](https://github.com/Obvious/phantomjs/issues/102) it might fail to and you'll get an `Error: spawn EACCES` error. [Download](http://phantomjs.org/download.html) PhantomJS manually and reinstall pageres if that happens.*
 
 
 ## Usage
@@ -41,9 +41,9 @@ List multiple urls and resolutions for pageres to capture all combinations.
 ```sh
 pageres <url> <resolution> ...
 
-pageres todomvc.com 1024x768 1366x768 # 2 screenshots
-pageres todomvc.com yeoman.io 1024x768 # 2 screenshots
-pageres todomvc.com yeoman.io 1024x768 1366x768 # 4 screenshots
+pageres https://sindresorhus.com 1024x768 1366x768 # 2 screenshots
+pageres https://sindresorhus.com https://https://example.com 1024x768 # 2 screenshots
+pageres https://sindresorhus.com https://https://example.com 1024x768 1366x768 # 4 screenshots
 ```
 
 Group arguments with square brackets.
@@ -53,10 +53,10 @@ pageres [ <url> <resolution> ] [ <url> <resolution> ]
 pageres [ <url> <resolution> ... ]
 
 # Mix grouped and single arguments
-pageres [ yeoman.io 1024x768 1600x900 ] todomvc.com 1366x768
+pageres [ https://example.com 1024x768 1600x900 ] https://sindresorhus.com 1366x768
 
 # Options defined inside a group will override the outer ones.
-pageres [ yeoman.io 1024x768 --no-crop ] todomvc.com 1366x768 --crop
+pageres [ https://example.com 1024x768 --no-crop ] https://sindresorhus.com 1366x768 --crop
 ```
 
 Screenshots are saved in the current directory.
@@ -65,19 +65,19 @@ Screenshots are saved in the current directory.
 
 ```sh
 # Basic multi-url, multi-resolution usage
-pageres todomvc.com yeoman.io 1366x768 1600x900
+pageres https://sindresorhus.com https://example.com 1366x768 1600x900
 
 # Override outer option within group
-pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
+pageres [ https://example.com 1366x768 1600x900 --no-crop ] [ https://sindresorhus.com 1024x768 480x320 ] --crop
 
 # Provide a custom filename template
-pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
+pageres https://sindresorhus.com 1024x768 --filename='<%= date %> - <%= url %>'
 
 # Capture a specific element
-pageres yeoman.io 1366x768 --selector='.page-header'
+pageres https://example.com 1366x768 --selector='.page-header'
 
 # Hide a specific element
-pageres yeoman.io 1366x768 --hide='.page-header'
+pageres https://example.com 1366x768 --hide='.page-header'
 
 # Capture a local file
 pageres unicorn.html 1366x768
@@ -85,24 +85,24 @@ pageres unicorn.html 1366x768
 
 ### Options
 
-##### `-v`, `--verbose`
+##### `--verbose`, `-v`
 
 Verbose output to see errors if you need to troubleshoot.
 
-##### `-c`, `--crop`
+##### `--crop`, `-c`
 
 Crop to the set height.
 
 ```
-$ pageres todomvc.com 1024x768 --crop
+$ pageres https://sindresorhus.com 1024x768 --crop
 ```
 
-##### `-d`, `--delay=<number>`
+##### `--delay=<number>`, `-d`
 
 Delay screenshot capture.
 
 ```
-$ pageres todomvc.com 1024x768 --delay=3
+$ pageres https://sindresorhus.com 1024x768 --delay=3
 ```
 
 ##### `--filename=<template>`
@@ -110,7 +110,7 @@ $ pageres todomvc.com 1024x768 --delay=3
 Custom filename.
 
 ```
-$ pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
+$ pageres https://sindresorhus.com 1024x768 --filename='<%= date %> - <%= url %>'
 ```
 
 ##### `--overwrite`
@@ -118,7 +118,7 @@ $ pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
 Overwrite destination file if it exists. Defaults to appending ` (n)` to the file name if `--overwrite` is not set.
 
 ```
-$ pageres todomvc.com 1366x768 --overwrite
+$ pageres https://sindresorhus.com 1366x768 --overwrite
 ```
 
 ##### `--selector=<element>`
@@ -126,7 +126,7 @@ $ pageres todomvc.com 1366x768 --overwrite
 Capture DOM element.
 
 ```
-$ pageres yeoman.io 1366x768 --selector='.page-header'
+$ pageres https://example.com 1366x768 --selector='.page-header'
 ```
 
 ##### `--hide=<element>`
@@ -134,7 +134,7 @@ $ pageres yeoman.io 1366x768 --selector='.page-header'
 Hide DOM element. Can be set multiple times.
 
 ```
-$ pageres yeoman.io 1366x768 --hide='.page-header'
+$ pageres https://example.com 1366x768 --hide='.page-header'
 ```
 
 ##### `--no-crop`
@@ -142,7 +142,7 @@ $ pageres yeoman.io 1366x768 --hide='.page-header'
 Override a global crop option within a group.
 
 ```
-$ pageres [ yeoman.io 1366x768 --no-crop ] todomvc.com 1024x768 --crop
+$ pageres [ https://example.com 1366x768 --no-crop ] https://sindresorhus.com 1024x768 --crop
 ```
 
 ##### `--css=<string>`
@@ -150,8 +150,8 @@ $ pageres [ yeoman.io 1366x768 --no-crop ] todomvc.com 1024x768 --crop
 Apply custom CSS to the webpage. Specify some CSS or the path to a CSS file.
 
 ```
-$ pageres todomvc.com --css='body { background: red; }'
-$ pageres todomvc.com --css='style.css'
+$ pageres https://sindresorhus.com --css='body { background: red; }'
+$ pageres https://sindresorhus.com --css='style.css'
 ```
 
 ##### `--cookie=<cookie>`
@@ -159,7 +159,7 @@ $ pageres todomvc.com --css='style.css'
 Browser cookie. Can be set multiple times.
 
 ```
-$ pageres yeoman.io --cookie='foo=bar'
+$ pageres https://example.com --cookie='foo=bar'
 ```
 
 ##### `--header=<header>`
@@ -167,7 +167,7 @@ $ pageres yeoman.io --cookie='foo=bar'
 Custom HTTP request header. Can be set multiple times.
 
 ```
-$ pageres yeoman.io --header='Cache-Control: no-cache'
+$ pageres https://example.com --header='Cache-Control: no-cache'
 ```
 
 ##### `--username=<username>`
@@ -201,21 +201,9 @@ You can persist your commands into a file and run it whenever with eg. `sh .page
 
 ```sh
 # .pageres
-pageres [ todomvc.com 1000x1000 --crop ] [ yeoman.io 500x500 ]
-pageres [ google.com 1000x1000 --crop ] [ github.com 500x500 ]
+pageres [ https://sindresorhus.com 1000x1000 --crop ] [ https://example.com 500x500 ]
+pageres [ https://google.com 1000x1000 --crop ] [ https://github.com 500x500 ]
 ```
-
-
-## Google Analytics screen resolutions
-
-You can use the most popular resolutions for your site with `pageres` by following these steps:
-
-- In Google Analytics go to the site for which you want screen resolutions
-- Select `Audience` => `Technology` => `Browser & OS`
-- Click the `Screen Resolution` link in the middle of the screen
-- Click the `Export` button at the top, then `Google Spreadsheets`, and select yes for importing
-- Select all the resolutions and copy them into a new file and save it
-- In your terminal run: `pageres website.com $(awk '{a = $1 " " a} END {print a}' file-from-above-step.txt)`
 
 
 ## License

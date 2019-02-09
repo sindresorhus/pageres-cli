@@ -9,18 +9,11 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "sindresorhus.com"
 	},
-	"maintainers": [
-		{
-			"name": "Kevin Mårtensson",
-			"email": "kevinmartensson@gmail.com",
-			"url": "github.com/kevva"
-		}
-	],
 	"bin": {
 		"pageres": "cli.js"
 	},
 	"engines": {
-		"node": ">=4"
+		"node": ">=8"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -46,8 +39,8 @@
 		"shot",
 		"responsive",
 		"gulpfriendly",
-		"phantom",
-		"phantomjs",
+		"puppeteer",
+		"chrome",
 		"image",
 		"svg",
 		"render",
@@ -61,20 +54,20 @@
 		"jpeg"
 	],
 	"dependencies": {
-		"array-differ": "^1.0.0",
-		"array-uniq": "^1.0.2",
+		"array-differ": "^2.0.3",
+		"array-uniq": "^2.0.0",
 		"arrify": "^1.0.0",
 		"log-symbols": "^2.1.0",
 		"meow": "^3.5.0",
-		"pageres": "^4.3.0",
+		"pageres": "^5.0.0",
 		"parse-headers": "^2.0.0",
 		"subarg": "^1.0.0",
 		"sudo-block": "^2.0.0",
 		"update-notifier": "^2.3.0"
 	},
 	"devDependencies": {
-		"ava": "*",
-		"execa": "^0.8.0",
-		"xo": "*"
+		"ava": "^1.2.0",
+		"execa": "^1.0.0",
+		"xo": "^0.24.0"
 	}
 }

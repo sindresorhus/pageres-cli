@@ -34,21 +34,21 @@ const cli = meow(`
 	Screenshots are saved in the current directory.
 
 	Usage
-	  pageres <url> <resolution>
-	  pageres [ <url> <resolution> ] [ <url> <resolution> ]
+	  $ pageres <url> <resolution>
+	  $ pageres [ <url> <resolution> ] [ <url> <resolution> ]
 
-	Example
-	  pageres todomvc.com yeoman.io 1366x768 1600x900
-	  pageres todomvc.com yeoman.io 1366x768 1600x900 --overwrite
-	  pageres [ yeoman.io 1366x768 1600x900 --no-crop ] [ todomvc.com 1024x768 480x320 ] --crop
-	  pageres todomvc.com 1024x768 --filename='<%= date %> - <%= url %>'
-	  pageres yeoman.io 1366x768 --selector='.page-header'
-	  pageres unicorn.html 1366x768
+	Examples
+	  $ pageres https://sindresorhus.com https://example.com 1366x768 1600x900
+	  $ pageres https://sindresorhus.com https://example.com 1366x768 1600x900 --overwrite
+	  $ pageres [ https://example.com 1366x768 1600x900 --no-crop ] [ https://sindresorhus.com 1024x768 480x320 ] --crop
+	  $ pageres https://sindresorhus.com 1024x768 --filename='<%= date %> - <%= url %>'
+	  $ pageres https://example.com 1366x768 --selector='.page-header'
+	  $ pageres unicorn.html 1366x768
 
 	Options
-	  -v, --verbose            Verbose output
-	  -c, --crop               Crop to the set height
-	  -d, --delay=<seconds>    Delay screenshot capture
+	  --verbose, -v            Verbose output
+	  --crop, -c               Crop to the set height
+	  --delay=<seconds>, -d    Delay screenshot capture
 	  --filename=<template>    Custom filename
 	  --overwrite              Overwrite file if it exists
 	  --selector=<element>     Capture DOM element
@@ -61,67 +61,54 @@ const cli = meow(`
 	  --format=<string>        Image format
 	  --css=<string>           Apply custom CSS
 
-	<url> can also be a local file path.
+	<url> can also be a local file path
 `, options);
 
-function generate(args, options) {
-	const pageres = new Pageres({incrementalName: !options.overwrite})
-		.dest(process.cwd());
+async function generate(args, options) {
+	const pageres = new Pageres({
+		incrementalName: !options.overwrite
+	}).dest(process.cwd());
 
-	args.forEach(arg => {
-		pageres.src(arg.url, arg.sizes, arg.options);
-	});
-
-	if (options.verbose) {
-		pageres.on('warn', console.error.bind(console));
+	for (const argument of args) {
+		pageres.src(argument.url, argument.sizes, argument.options);
 	}
 
-	pageres.run()
-		.then(() => {
-			pageres.successMessage();
-		})
-		.catch(err => {
-			if (err.noStack) {
-				console.error(err.message);
-				process.exit(1);
-			} else {
-				throw err;
-			}
-		});
+	await pageres.run();
+	pageres.successMessage();
 }
 
 function get(args) {
 	const ret = [];
 
-	args.forEach(arg => {
-		if (arg.url.length === 0) {
+	for (const argument of args) {
+		if (argument.url.length === 0) {
 			console.error(logSymbols.warning, 'Specify a url');
 			process.exit(1);
 		}
 
-		if (arg.sizes.length === 0 && arg.keywords.length === 0) {
-			arg.sizes = ['1366x768'];
+		if (argument.sizes.length === 0 && argument.keywords.length === 0) {
+			argument.sizes = ['1366x768'];
 		}
 
-		if (arg.keywords.length > 0) {
-			arg.sizes = arg.sizes.concat(arg.keywords);
+		if (argument.keywords.length > 0) {
+			argument.sizes = argument.sizes.concat(argument.keywords);
 		}
 
-		arg.url.forEach(el => {
+		for (const url of argument.url) {
 			ret.push({
-				url: el,
-				sizes: arg.sizes,
-				options: arg.options
+				url,
+				sizes: argument.sizes,
+				options: argument.options
 			});
-		});
-	});
+		}
+	}
 
 	return ret;
 }
 
 function parse(args, globalOptions) {
 	return args.map(arg => {
-		const options = Object.assign({}, globalOptions, arg);
+		const options = {...globalOptions, ...arg};
 
 		arg = arg._;
 		delete options._;
@@ -159,7 +146,7 @@ function parse(args, globalOptions) {
 	});
 }
 
-function init(args, options) {
+async function init(args, options) {
 	if (args.length === 0) {
 		cli.showHelp(1);
 	}
@@ -176,10 +163,13 @@ function init(args, options) {
 	const parsedArgs = parse(args, options);
 	const items = get(parsedArgs);
 
-	generate(items, options);
+	await generate(items, options);
 }
 
 sudoBlock();
 updateNotifier({pkg: cli.pkg}).notify();
 
-init(subarg(cli.input, options)._, cli.flags);
+init(subarg(cli.input, options)._, cli.flags).catch(error => {
+	console.error(error);
+	process.exit(1);
+});
