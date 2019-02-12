@@ -206,6 +206,12 @@ pageres [ https://google.com 1000x1000 --crop ] [ https://github.com 500x500 ]
 ```
 
 
+## Related
+
+- [pageres](https://github.com/sindresorhus/pageres) - API for this module
+- [capture-website-cli](https://github.com/sindresorhus/capture-website-cli) - A different take on screenshotting websites
+
+
 ## License
 
 MIT © [Sindre Sorhus](https://sindresorhus.com)
