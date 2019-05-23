@@ -17,10 +17,6 @@ $ npm install --global pageres-cli
 
 Note to Linux users: If you get a "No usable sandbox!" error, you need to enable [system sandboxing](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#setting-up-chrome-linux-sandbox).
 
-<a href="https://www.patreon.com/sindresorhus">
-	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
-
 
 ## Usage
 
@@ -210,8 +206,3 @@ pageres [ https://google.com 1000x1000 --crop ] [ https://github.com 500x500 ]
 
 - [pageres](https://github.com/sindresorhus/pageres) - API for this module
 - [capture-website-cli](https://github.com/sindresorhus/capture-website-cli) - A different take on screenshotting websites
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
