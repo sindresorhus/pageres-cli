@@ -38,8 +38,8 @@ List multiple urls and resolutions for pageres to capture all combinations.
 pageres <url> <resolution> ...
 
 pageres https://sindresorhus.com 1024x768 1366x768 # 2 screenshots
-pageres https://sindresorhus.com https://https://example.com 1024x768 # 2 screenshots
-pageres https://sindresorhus.com https://https://example.com 1024x768 1366x768 # 4 screenshots
+pageres https://sindresorhus.com https://example.com 1024x768 # 2 screenshots
+pageres https://sindresorhus.com https://example.com 1024x768 1366x768 # 4 screenshots
 ```
 
 Group arguments with square brackets.
