@@ -190,6 +190,10 @@ Custom user agent.
 
 Set background color to `transparent` instead of `white` if no background is set.
 
+##### `--darkMode`
+
+Emulate preference of dark color scheme.
+
 
 ## Config file
 
