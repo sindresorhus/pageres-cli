@@ -1,4 +1,4 @@
-# pageres-cli [![Build Status](https://travis-ci.org/sindresorhus/pageres-cli.svg?branch=master)](https://travis-ci.org/sindresorhus/pageres-cli) [![](https://img.shields.io/badge/unicorn-approved-ff69b4.svg)](https://www.youtube.com/watch?v=9auOCbH5Ns4)
+# pageres-cli
 
 ![](screenshot.png)
 
@@ -8,7 +8,6 @@ Capture screenshots of websites in various resolutions. A good way to make sure 
 
 *See [pageres](https://github.com/sindresorhus/pageres) for the programmatic API and issues tracker.*
 
-
 ## Install
 
 ```
@@ -16,7 +15,6 @@ $ npm install --global pageres-cli
 ```
 
 Note to Linux users: If you get a "No usable sandbox!" error, you need to enable [system sandboxing](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#setting-up-chrome-linux-sandbox).
-
 
 ## Usage
 
@@ -194,7 +192,6 @@ Set background color to `transparent` instead of `white` if no background is set
 
 Emulate preference of dark color scheme.
 
-
 ## Config file
 
 You can persist your commands into a file and run it whenever with eg. `sh .pageres`:
@@ -204,7 +201,6 @@ You can persist your commands into a file and run it whenever with eg. `sh .page
 pageres [ https://sindresorhus.com 1000x1000 --crop ] [ https://example.com 500x500 ]
 pageres [ https://google.com 1000x1000 --crop ] [ https://github.com 500x500 ]
 ```
-
 
 ## Related
 

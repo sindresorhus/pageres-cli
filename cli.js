@@ -80,7 +80,7 @@ async function generate(args, options) {
 }
 
 function get(args) {
-	const ret = [];
+	const returnValue = [];
 
 	for (const argument of args) {
 		if (argument.url.length === 0) {
@@ -97,7 +97,7 @@ function get(args) {
 		}
 
 		for (const url of argument.url) {
-			ret.push({
+			returnValue.push({
 				url,
 				sizes: argument.sizes,
 				options: argument.options
@@ -105,7 +105,7 @@ function get(args) {
 		}
 	}
 
-	return ret;
+	return returnValue;
 }
 
 function parse(args, globalOptions) {

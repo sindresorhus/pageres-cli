@@ -4,16 +4,17 @@
 	"description": "Capture website screenshots",
 	"license": "MIT",
 	"repository": "sindresorhus/pageres-cli",
+	"funding": "https://github.com/sponsors/sindresorhus",
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"url": "https://sindresorhus.com"
 	},
 	"bin": {
 		"pageres": "cli.js"
 	},
 	"engines": {
-		"node": ">=8"
+		"node": ">=10"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -54,20 +55,20 @@
 		"jpeg"
 	],
 	"dependencies": {
-		"array-differ": "^2.0.3",
-		"array-uniq": "^2.0.0",
-		"arrify": "^1.0.0",
-		"log-symbols": "^2.1.0",
+		"array-differ": "^3.0.0",
+		"array-uniq": "^2.1.0",
+		"arrify": "^2.0.1",
+		"log-symbols": "^4.0.0",
 		"meow": "^3.5.0",
 		"pageres": "^6.0.0",
-		"parse-headers": "^2.0.0",
+		"parse-headers": "^2.0.3",
 		"subarg": "^1.0.0",
-		"sudo-block": "^2.0.0",
-		"update-notifier": "^2.3.0"
+		"sudo-block": "^3.0.0",
+		"update-notifier": "^5.0.1"
 	},
 	"devDependencies": {
-		"ava": "^1.2.0",
-		"execa": "^1.0.0",
-		"xo": "^0.24.0"
+		"ava": "^2.4.0",
+		"execa": "^5.0.0",
+		"xo": "^0.36.1"
 	}
 }
