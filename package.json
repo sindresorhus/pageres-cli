@@ -59,7 +59,7 @@
 		"arrify": "^1.0.0",
 		"log-symbols": "^2.1.0",
 		"meow": "^3.5.0",
-		"pageres": "^5.0.0",
+		"pageres": "^6.0.0",
 		"parse-headers": "^2.0.0",
 		"subarg": "^1.0.0",
 		"sudo-block": "^2.0.0",

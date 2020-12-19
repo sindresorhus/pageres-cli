@@ -15,7 +15,8 @@ const options = {
 	boolean: [
 		'verbose',
 		'crop',
-		'overwrite'
+		'overwrite',
+		'darkMode'
 	],
 	default: {
 		delay: 0,
@@ -60,6 +61,7 @@ const cli = meow(`
 	  --scale=<number>         Scale webpage
 	  --format=<string>        Image format
 	  --css=<string>           Apply custom CSS
+	  --darkMode               Emulate preference of dark color scheme
 
 	<url> can also be a local file path
 `, options);
