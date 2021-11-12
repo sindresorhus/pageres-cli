@@ -109,7 +109,10 @@ function get(args) {
 }
 
 function parse(args, globalOptions) {
-	return args.map(arg => {
+	const filename = arrify(globalOptions.filename);
+	delete globalOptions.filename;
+
+	return args.map((arg, index) => {
 		const options = {...globalOptions, ...arg};
 
 		arg = arg._;
@@ -121,6 +124,10 @@ function parse(args, globalOptions) {
 
 		if (options.header) {
 			options.header = parseHeaders(arrify(options.header).join('\n'));
+		}
+
+		if (filename[index]) {
+			options.filename = filename[index];
 		}
 
 		// Plural makes more sense for programmatic options
