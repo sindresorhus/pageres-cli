@@ -44,6 +44,16 @@ test('generate screenshots using keywords', async t => {
 	fs.unlinkSync('sindresorhus.com-320x568.png');
 });
 
+test('generate screenshots with multiple filename', async t => {
+	await execa.command('./cli.js [ https://google.com --filename=google ] [ https://sindresorhus.com --filename=sindre ]');
+
+	t.true(fs.existsSync('google.png'));
+	fs.unlinkSync('google.png');
+
+	t.true(fs.existsSync('sindre.png'));
+	fs.unlinkSync('sindre.png');
+});
+
 test('show help screen', async t => {
 	const {stdout} = await execa('./cli.js', ['--help']);
 	t.regex(stdout, /pageres <url>/);
