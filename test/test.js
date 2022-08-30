@@ -1,8 +1,8 @@
-import fs from 'fs';
-import {spawn} from 'child_process';
-import execa from 'execa';
+import fs from 'node:fs';
+import {spawn} from 'node:child_process';
+import {execa, execaCommand} from 'execa';
 import test from 'ava';
-import {version as pkgVersion} from '../package';
+import {pEvent} from 'p-event';
 
 test('generate screenshot', async t => {
 	await execa('./cli.js', ['https://sindresorhus.com', '320x240']);
@@ -11,23 +11,22 @@ test('generate screenshot', async t => {
 	fs.unlinkSync('sindresorhus.com-320x240.png');
 });
 
-test.cb('remove temporary files on cancel', t => {
-	t.plan(1);
-
+test('remove temporary files on cancel', async t => {
 	const subprocess = spawn('./cli.js', ['https://sindresorhus.com', '320x240']);
 
-	subprocess.on('exit', () => {
-		t.false(fs.existsSync('sindresorhus.com-320x240.png'));
-		t.end();
-	});
+	const promise = pEvent(subprocess, 'exit');
 
 	setTimeout(() => {
 		subprocess.kill('SIGINT');
 	}, 500);
+
+	await promise;
+
+	t.false(fs.existsSync('sindresorhus.com-320x240.png'));
 });
 
 test('show error if no url is specified', async t => {
-	await t.throwsAsync(execa('./cli.js', ['320x240']), /Specify a url/);
+	await t.throwsAsync(execa('./cli.js', ['320x240']), {message: /Specify a URL/});
 });
 
 test('use 1366x768 as default resolution', async t => {
@@ -45,7 +44,7 @@ test('generate screenshots using keywords', async t => {
 });
 
 test('generate screenshots with multiple filename', async t => {
-	await execa.command('./cli.js [ https://google.com --filename=google ] [ https://sindresorhus.com --filename=sindre ]');
+	await execaCommand('./cli.js [ https://google.com --filename=google ] [ https://sindresorhus.com --filename=sindre ]');
 
 	t.true(fs.existsSync('google.png'));
 	fs.unlinkSync('google.png');
@@ -61,5 +60,5 @@ test('show help screen', async t => {
 
 test('show version', async t => {
 	const {stdout} = await execa('./cli.js', ['--version']);
-	t.is(stdout, pkgVersion);
+	t.is(stdout, JSON.parse(fs.readFileSync('./package.json', 'utf8'))?.version);
 });

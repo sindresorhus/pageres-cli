@@ -10,8 +10,8 @@ Capture screenshots of websites in various resolutions. A good way to make sure 
 
 ## Install
 
-```
-$ npm install --global pageres-cli
+```sh
+npm install --global pageres-cli
 ```
 
 Note to Linux users: If you get a "No usable sandbox!" error, you need to enable [system sandboxing](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#setting-up-chrome-linux-sandbox).
@@ -87,81 +87,81 @@ Verbose output to see errors if you need to troubleshoot.
 
 Crop to the set height.
 
-```
-$ pageres https://sindresorhus.com 1024x768 --crop
+```sh
+pageres https://sindresorhus.com 1024x768 --crop
 ```
 
 ##### `--delay=<number>`, `-d`
 
 Delay screenshot capture.
 
-```
-$ pageres https://sindresorhus.com 1024x768 --delay=3
+```sh
+pageres https://sindresorhus.com 1024x768 --delay=3
 ```
 
 ##### `--filename=<template>`
 
 Custom filename.
 
-```
-$ pageres https://sindresorhus.com 1024x768 --filename='<%= date %> - <%= url %>'
+```sh
+pageres https://sindresorhus.com 1024x768 --filename='<%= date %> - <%= url %>'
 ```
 
 ##### `--overwrite`
 
 Overwrite destination file if it exists. Defaults to appending ` (n)` to the file name if `--overwrite` is not set.
 
-```
-$ pageres https://sindresorhus.com 1366x768 --overwrite
+```sh
+pageres https://sindresorhus.com 1366x768 --overwrite
 ```
 
 ##### `--selector=<element>`
 
 Capture DOM element.
 
-```
-$ pageres https://example.com 1366x768 --selector='.page-header'
+```sh
+pageres https://example.com 1366x768 --selector='.page-header'
 ```
 
 ##### `--hide=<element>`
 
 Hide DOM element. Can be set multiple times.
 
-```
-$ pageres https://example.com 1366x768 --hide='.page-header'
+```sh
+pageres https://example.com 1366x768 --hide='.page-header'
 ```
 
 ##### `--no-crop`
 
 Override a global crop option within a group.
 
-```
-$ pageres [ https://example.com 1366x768 --no-crop ] https://sindresorhus.com 1024x768 --crop
+```sh
+pageres [ https://example.com 1366x768 --no-crop ] https://sindresorhus.com 1024x768 --crop
 ```
 
 ##### `--css=<string>`
 
 Apply custom CSS to the webpage. Specify some CSS or the path to a CSS file.
 
-```
-$ pageres https://sindresorhus.com --css='body { background: red; }'
-$ pageres https://sindresorhus.com --css='style.css'
+```sh
+pageres https://sindresorhus.com --css='body { background: red; }'
+pageres https://sindresorhus.com --css='style.css'
 ```
 
 ##### `--cookie=<cookie>`
 
 Browser cookie. Can be set multiple times.
 
-```
-$ pageres https://example.com --cookie='foo=bar'
+```sh
+pageres https://example.com --cookie='foo=bar'
 ```
 
 ##### `--header=<header>`
 
 Custom HTTP request header. Can be set multiple times.
 
-```
-$ pageres https://example.com --header='Cache-Control: no-cache'
+```sh
+pageres https://example.com --header='Cache-Control: no-cache'
 ```
 
 ##### `--username=<username>`

@@ -10,11 +10,12 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
 	"bin": {
-		"pageres": "cli.js"
+		"pageres": "./cli.js"
 	},
 	"engines": {
-		"node": ">=10"
+		"node": ">=14.16"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -55,20 +56,21 @@
 		"jpeg"
 	],
 	"dependencies": {
-		"array-differ": "^3.0.0",
-		"array-uniq": "^2.1.0",
-		"arrify": "^2.0.1",
-		"log-symbols": "^4.0.0",
-		"meow": "^3.5.0",
-		"pageres": "^6.0.0",
-		"parse-headers": "^2.0.3",
+		"array-differ": "^4.0.0",
+		"array-uniq": "^3.0.0",
+		"arrify": "^3.0.0",
+		"log-symbols": "^5.1.0",
+		"meow": "^10.1.3",
+		"pageres": "^7.0.0",
+		"parse-headers": "^2.0.5",
 		"subarg": "^1.0.0",
-		"sudo-block": "^3.0.0",
-		"update-notifier": "^5.0.1"
+		"sudo-block": "^4.0.0",
+		"update-notifier": "^6.0.2"
 	},
 	"devDependencies": {
-		"ava": "^2.4.0",
-		"execa": "^5.0.0",
-		"xo": "^0.36.1"
+		"ava": "^4.3.3",
+		"execa": "^6.1.0",
+		"p-event": "^5.0.1",
+		"xo": "^0.52.2"
 	}
 }

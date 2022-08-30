@@ -1,32 +1,32 @@
 #!/usr/bin/env node
-'use strict';
-const updateNotifier = require('update-notifier');
-const subarg = require('subarg');
-const sudoBlock = require('sudo-block');
-const logSymbols = require('log-symbols');
-const arrayUniq = require('array-uniq');
-const arrayDiffer = require('array-differ');
-const arrify = require('arrify');
-const Pageres = require('pageres');
-const parseHeaders = require('parse-headers');
-const meow = require('meow');
+import process from 'node:process';
+import updateNotifier from 'update-notifier';
+import subarg from 'subarg';
+import sudoBlock from 'sudo-block';
+import logSymbols from 'log-symbols';
+import arrayUniq from 'array-uniq';
+import arrayDiffer from 'array-differ';
+import arrify from 'arrify';
+import Pageres from 'pageres';
+import parseHeaders from 'parse-headers';
+import meow from 'meow';
 
-const options = {
+const subargOptions = {
 	boolean: [
 		'verbose',
 		'crop',
 		'overwrite',
-		'darkMode'
+		'darkMode',
 	],
 	default: {
 		delay: 0,
-		scale: 1
+		scale: 1,
 	},
 	alias: {
 		v: 'verbose',
 		c: 'crop',
-		d: 'delay'
-	}
+		d: 'delay',
+	},
 };
 
 const cli = meow(`
@@ -64,15 +64,43 @@ const cli = meow(`
 	  --darkMode               Emulate preference of dark color scheme
 
 	<url> can also be a local file path
-`, options);
+`, {
+	importMeta: import.meta,
+	flags: {
+		verbose: {
+			type: 'boolean',
+			alias: 'v',
+		},
+		crop: {
+			type: 'boolean',
+			alias: 'c',
+		},
+		overwrite: {
+			type: 'boolean',
+		},
+		darkMode: {
+			type: 'boolean',
+		},
+		delay: {
+			type: 'number',
+			alias: 'd',
+			default: 0,
+		},
+		scale: {
+			type: 'number',
+			default: 1,
+		},
+	},
+});
 
-async function generate(args, options) {
+async function generate(arguments_, options) {
 	const pageres = new Pageres({
-		incrementalName: !options.overwrite
-	}).dest(process.cwd());
+		incrementalName: !options.overwrite,
+	})
+		.destination(process.cwd());
 
-	for (const argument of args) {
-		pageres.src(argument.url, argument.sizes, argument.options);
+	for (const argument of arguments_) {
+		pageres.source(argument.url, argument.sizes, argument.options);
 	}
 
 	await pageres.run();
@@ -84,7 +112,7 @@ function get(args) {
 
 	for (const argument of args) {
 		if (argument.url.length === 0) {
-			console.error(logSymbols.warning, 'Specify a url');
+			console.error(logSymbols.warning, 'Specify a URL');
 			process.exit(1);
 		}
 
@@ -93,14 +121,14 @@ function get(args) {
 		}
 
 		if (argument.keywords.length > 0) {
-			argument.sizes = argument.sizes.concat(argument.keywords);
+			argument.sizes = [...argument.sizes, ...argument.keywords];
 		}
 
 		for (const url of argument.url) {
 			returnValue.push({
 				url,
 				sizes: argument.sizes,
-				options: argument.options
+				options: argument.options,
 			});
 		}
 	}
@@ -108,68 +136,67 @@ function get(args) {
 	return returnValue;
 }
 
-function parse(args, globalOptions) {
+function parse(arguments_, globalOptions) {
 	const filename = arrify(globalOptions.filename);
 	delete globalOptions.filename;
 
-	return args.map((arg, index) => {
-		const options = {...globalOptions, ...arg};
+	return arguments_.map((argument, index) => {
+		const options = {
+			...globalOptions,
+			...argument,
+		};
 
-		arg = arg._;
+		argument = argument._;
 		delete options._;
 
 		if (options.cookie) {
-			options.cookie = arrify(options.cookie);
+			options.cookies = [options.cookie].flat();
+			delete options.cookie;
 		}
 
 		if (options.header) {
-			options.header = parseHeaders(arrify(options.header).join('\n'));
+			options.headers = parseHeaders([options.header].flat().join('\n'));
+			delete options.header;
 		}
 
 		if (filename[index]) {
 			options.filename = filename[index];
 		}
 
-		// Plural makes more sense for programmatic options
-		options.cookies = options.cookie;
-		options.headers = options.header;
-		delete options.cookie;
-		delete options.header;
-
 		if (options.hide) {
-			options.hide = arrify(options.hide);
+			options.hide = [options.hide].flat();
 		}
 
 		const urlRegex = /https?:\/\/|localhost|\./;
 		const sizeRegex = /^\d{3,4}x\d{3,4}$/i;
-		const url = arrayUniq(arg.filter(x => urlRegex.test(x)));
-		const sizes = arrayUniq(arg.filter(x => sizeRegex.test(x)));
-		const keywords = arrayDiffer(arg, url.concat(sizes));
+		const url = arrayUniq(argument.filter(x => urlRegex.test(x)));
+		const sizes = arrayUniq(argument.filter(x => sizeRegex.test(x)));
+		const keywords = arrayDiffer(argument, [...url, ...sizes]);
 
 		return {
 			url,
 			sizes,
 			keywords,
-			options
+			options,
 		};
 	});
 }
 
-async function init(args, options) {
-	if (args.length === 0) {
+async function init(arguments_, options) {
+	if (arguments_.length === 0) {
 		cli.showHelp(1);
 	}
 
-	const nonGroupedArgs = args.filter(x => !x._);
+	const nonGroupedArgs = arguments_.filter(argument => !argument._);
 
 	// Filter grouped args
-	args = args.filter(x => x._);
+	arguments_ = arguments_.filter(argument => argument._);
 
 	if (nonGroupedArgs.length > 0) {
-		args.push({_: nonGroupedArgs});
+		arguments_.push({_: nonGroupedArgs});
 	}
 
-	const parsedArgs = parse(args, options);
+	const parsedArgs = parse(arguments_, options);
 	const items = get(parsedArgs);
 
 	await generate(items, options);
@@ -178,7 +205,6 @@ async function init(args, options) {
 sudoBlock();
 updateNotifier({pkg: cli.pkg}).notify();
 
-init(subarg(cli.input, options)._, cli.flags).catch(error => {
-	console.error(error);
-	process.exit(1);
-});
+const arguments_ = subarg(cli.input, subargOptions)._;
+
+await init(arguments_, cli.flags);
