@@ -6,7 +6,6 @@ import sudoBlock from 'sudo-block';
 import logSymbols from 'log-symbols';
 import arrayUniq from 'array-uniq';
 import arrayDiffer from 'array-differ';
-import arrify from 'arrify';
 import Pageres from 'pageres';
 import parseHeaders from 'parse-headers';
 import meow from 'meow';
@@ -69,11 +68,11 @@ const cli = meow(`
 	flags: {
 		verbose: {
 			type: 'boolean',
-			alias: 'v',
+			shortFlag: 'v',
 		},
 		crop: {
 			type: 'boolean',
-			alias: 'c',
+			shortFlaf: 'c',
 		},
 		overwrite: {
 			type: 'boolean',
@@ -83,7 +82,7 @@ const cli = meow(`
 		},
 		delay: {
 			type: 'number',
-			alias: 'd',
+			shortFlag: 'd',
 			default: 0,
 		},
 		scale: {
@@ -137,7 +136,7 @@ function get(args) {
 }
 
 function parse(arguments_, globalOptions) {
-	const filename = arrify(globalOptions.filename);
+	const filename = [globalOptions.filename].flat();
 	delete globalOptions.filename;
 
 	return arguments_.map((argument, index) => {

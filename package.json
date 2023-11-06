@@ -15,7 +15,7 @@
 		"pageres": "./cli.js"
 	},
 	"engines": {
-		"node": ">=14.16"
+		"node": ">=18"
 	},
 	"scripts": {
 		"test": "xo && ava"
@@ -59,18 +59,18 @@
 		"array-differ": "^4.0.0",
 		"array-uniq": "^3.0.0",
 		"arrify": "^3.0.0",
-		"log-symbols": "^5.1.0",
-		"meow": "^10.1.3",
-		"pageres": "^7.0.0",
+		"log-symbols": "^6.0.0",
+		"meow": "^12.1.1",
+		"pageres": "^8.0.0",
 		"parse-headers": "^2.0.5",
 		"subarg": "^1.0.0",
-		"sudo-block": "^4.0.0",
-		"update-notifier": "^6.0.2"
+		"sudo-block": "^5.0.0",
+		"update-notifier": "^7.0.0"
 	},
 	"devDependencies": {
-		"ava": "^4.3.3",
-		"execa": "^6.1.0",
-		"p-event": "^5.0.1",
-		"xo": "^0.52.2"
+		"ava": "^5.3.1",
+		"execa": "^8.0.1",
+		"p-event": "^6.0.0",
+		"xo": "^0.56.0"
 	}
 }
