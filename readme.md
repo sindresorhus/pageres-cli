@@ -22,6 +22,8 @@ Specify urls and screen resolutions as arguments. Order doesn't matter.
 
 If no resolution is specified it will default to `1366x768` which is the most popular resolution.
 
+**Note:** Device keywords (like `iphone5s`, `ipad`, etc.) are no longer supported. Use explicit resolutions instead.
+
 ```sh
 pageres <url> <resolution>
 pageres <resolution> <url>
@@ -192,6 +194,22 @@ Set background color to `transparent` instead of `white` if no background is set
 
 Emulate preference of dark color scheme.
 
+##### `--clickElement=<element>`
+
+Click DOM element before screenshot.
+
+```sh
+pageres https://example.com 1366x768 --clickElement='#show-menu'
+```
+
+##### `--timeout=<seconds>`
+
+Request timeout in seconds.
+
+```sh
+pageres https://example.com 1366x768 --timeout=30
+```
+
 ## Config file
 
 You can persist your commands into a file and run it whenever with eg. `sh .pageres`:
@@ -204,5 +222,5 @@ pageres [ https://google.com 1000x1000 --crop ] [ https://github.com 500x500 ]
 
 ## Related
 
-- [pageres](https://github.com/sindresorhus/pageres) - API for this module
+- [pageres](https://github.com/sindresorhus/pageres) - API for this package
 - [capture-website-cli](https://github.com/sindresorhus/capture-website-cli) - A different take on screenshotting websites

@@ -1,17 +1,18 @@
 import fs from 'node:fs';
 import {spawn} from 'node:child_process';
+import {test} from 'node:test';
+import assert from 'node:assert';
 import {execa, execaCommand} from 'execa';
-import test from 'ava';
 import {pEvent} from 'p-event';
 
-test('generate screenshot', async t => {
+test('generate screenshot', async () => {
 	await execa('./cli.js', ['https://sindresorhus.com', '320x240']);
 
-	t.true(fs.existsSync('sindresorhus.com-320x240.png'));
+	assert.ok(fs.existsSync('sindresorhus.com-320x240.png'));
 	fs.unlinkSync('sindresorhus.com-320x240.png');
 });
 
-test('remove temporary files on cancel', async t => {
+test('remove temporary files on cancel', async () => {
 	const subprocess = spawn('./cli.js', ['https://sindresorhus.com', '320x240']);
 
 	const promise = pEvent(subprocess, 'exit');
@@ -22,43 +23,47 @@ test('remove temporary files on cancel', async t => {
 
 	await promise;
 
-	t.false(fs.existsSync('sindresorhus.com-320x240.png'));
+	assert.ok(!fs.existsSync('sindresorhus.com-320x240.png'));
 });
 
-test('show error if no url is specified', async t => {
-	await t.throwsAsync(execa('./cli.js', ['320x240']), {message: /Specify a URL/});
+test('show error if no url is specified', async () => {
+	await assert.rejects(
+		execa('./cli.js', ['320x240']),
+		{message: /Specify a URL/},
+	);
 });
 
-test('use 1366x768 as default resolution', async t => {
+test('use 1366x768 as default resolution', async () => {
 	await execa('./cli.js', ['https://sindresorhus.com']);
 
-	t.true(fs.existsSync('sindresorhus.com-1366x768.png'));
+	assert.ok(fs.existsSync('sindresorhus.com-1366x768.png'));
 	fs.unlinkSync('sindresorhus.com-1366x768.png');
 });
 
-test('generate screenshots using keywords', async t => {
-	await execa('./cli.js', ['https://sindresorhus.com', 'iphone5s']);
-
-	t.true(fs.existsSync('sindresorhus.com-320x568.png'));
-	fs.unlinkSync('sindresorhus.com-320x568.png');
+test('show error for unsupported keywords', async () => {
+	await assert.rejects(
+		execa('./cli.js', ['https://sindresorhus.com', 'iphone5s']),
+		{message: /Device keywords are no longer supported/},
+	);
 });
 
-test('generate screenshots with multiple filename', async t => {
+test('generate screenshots with multiple filename', async () => {
 	await execaCommand('./cli.js [ https://google.com --filename=google ] [ https://sindresorhus.com --filename=sindre ]');
 
-	t.true(fs.existsSync('google.png'));
+	assert.ok(fs.existsSync('google.png'));
 	fs.unlinkSync('google.png');
 
-	t.true(fs.existsSync('sindre.png'));
+	assert.ok(fs.existsSync('sindre.png'));
 	fs.unlinkSync('sindre.png');
 });
 
-test('show help screen', async t => {
+test('show help screen', async () => {
 	const {stdout} = await execa('./cli.js', ['--help']);
-	t.regex(stdout, /pageres <url>/);
+	assert.match(stdout, /pageres <url>/);
 });
 
-test('show version', async t => {
+test('show version', async () => {
 	const {stdout} = await execa('./cli.js', ['--version']);
-	t.is(stdout, JSON.parse(fs.readFileSync('./package.json', 'utf8'))?.version);
+	const packageVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8'))?.version;
+	assert.strictEqual(stdout, packageVersion);
 });

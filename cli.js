@@ -16,10 +16,12 @@ const subargOptions = {
 		'crop',
 		'overwrite',
 		'darkMode',
+		'transparent',
 	],
 	default: {
 		delay: 0,
 		scale: 1,
+		timeout: 60,
 	},
 	alias: {
 		v: 'verbose',
@@ -61,6 +63,9 @@ const cli = meow(`
 	  --format=<string>        Image format
 	  --css=<string>           Apply custom CSS
 	  --darkMode               Emulate preference of dark color scheme
+	  --transparent            Set transparent background
+	  --clickElement=<element> Click DOM element before screenshot
+	  --timeout=<seconds>      Request timeout in seconds
 
 	<url> can also be a local file path
 `, {
@@ -72,13 +77,20 @@ const cli = meow(`
 		},
 		crop: {
 			type: 'boolean',
-			shortFlaf: 'c',
+			shortFlag: 'c',
 		},
 		overwrite: {
 			type: 'boolean',
 		},
 		darkMode: {
 			type: 'boolean',
+		},
+		transparent: {
+			type: 'boolean',
+		},
+		timeout: {
+			type: 'number',
+			default: 60,
 		},
 		delay: {
 			type: 'number',
@@ -115,12 +127,13 @@ function get(args) {
 			process.exit(1);
 		}
 
-		if (argument.sizes.length === 0 && argument.keywords.length === 0) {
+		if (argument.sizes.length === 0) {
 			argument.sizes = ['1366x768'];
 		}
 
 		if (argument.keywords.length > 0) {
-			argument.sizes = [...argument.sizes, ...argument.keywords];
+			console.error(logSymbols.warning, 'Device keywords are no longer supported in pageres 9.0. Use explicit sizes instead.');
+			process.exit(1);
 		}
 
 		for (const url of argument.url) {
@@ -162,9 +175,7 @@ function parse(arguments_, globalOptions) {
 			options.filename = filename[index];
 		}
 
-		if (options.hide) {
-			options.hide = [options.hide].flat();
-		}
+		options.hide &&= [options.hide].flat();
 
 		const urlRegex = /https?:\/\/|localhost|\./;
 		const sizeRegex = /^\d{3,4}x\d{3,4}$/i;
